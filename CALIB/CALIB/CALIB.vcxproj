@@ -10,6 +10,15 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CALIB.h" />
+    <ClInclude Include="Memory\Memory.h" />
+    <ClInclude Include="Strings\Strings.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Memory\Memory.cpp" />
+    <ClCompile Include="Strings\Strings.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A93CA762-8D83-408A-9265-7985FE6AC703}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -70,9 +79,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
