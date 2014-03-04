@@ -2,6 +2,9 @@
 
 extern "C"
 {
+	DWORD cBreakpoint::dwAddress1, cBreakpoint::dwAddress2, cBreakpoint::dwAddress3, cBreakpoint::dwAddress4;
+	DWORD cBreakpoint::dwEIP1, cBreakpoint::dwEIP2, cBreakpoint::dwEIP3, cBreakpoint::dwEIP4;
+
 	cBreakpoint::cBreakpoint()
 	{
 		thread = NULL;
