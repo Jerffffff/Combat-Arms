@@ -1,5 +1,5 @@
 #include "CALIB.h"
-cBreakpoint* Breakpoint;
+cBreakpoint* Breakpoint1, *Breakpoint2;
 
 DWORD dwFireWeaponJMP;
 __declspec(naked) void __stdcall vFireWeapon()
@@ -33,20 +33,48 @@ __declspec(naked) void __stdcall vAmmo()
 	__asm JMP dwAmmoJMP;
 }
 
-DWORD _stdcall dwStart(LPVOID)
+DWORD _stdcall dwBreakpoint1Thread(LPVOID)
+{
+	Breakpoint1 = new cBreakpoint(GetCurrentThread());
+
+	dwFireWeaponJMP = Memory->ADDRESS_FIREWEAPON + 1;
+	Breakpoint1->SetBreakPoint1(Memory->ADDRESS_FIREWEAPON, DWORD(&vFireWeapon));
+
+	dwAmmoJMP = Memory->ADDRESS_AMMO + 0xB;
+	Breakpoint1->SetBreakPoint2(Memory->ADDRESS_AMMO, DWORD(&vAmmo));
+
+	while (1)
+	{
+		//Sleep(1);
+	}
+
+	return NULL;
+}
+
+bool bEnabled = false;
+DWORD _stdcall dwMainThread(LPVOID)
 {
 	while (!GetModuleHandle(Strings->MODULE_CLIENTFX))
 		Sleep(250);
 
 	Memory = new cMemory();
 
-	dwFireWeaponJMP = Memory->ADDRESS_FIREWEAPON + 1;
-	Breakpoint->SetBreakPoint1(Memory->ADDRESS_FIREWEAPON, DWORD(&vFireWeapon));
+	CreateThread(0, 0, dwBreakpoint1Thread, 0, 0, 0);
+	Sleep(1000);
 
-	dwAmmoJMP = Memory->ADDRESS_AMMO + 0xB;
-	Breakpoint->SetBreakPoint2(Memory->ADDRESS_AMMO, DWORD(&vAmmo));
+	while (1)
+	{
+		if (GetAsyncKeyState(VK_INSERT) & 1)
+		{
+			bEnabled = !bEnabled;
+			if (bEnabled)
+				Breakpoint1->Enable();
+			else
+				Breakpoint1->Disable();
+		}
 
-	Breakpoint->SetBreakPoints();
+		Sleep(100);
+	}
 
 	return NULL;
 }
@@ -55,9 +83,8 @@ bool _stdcall DllMain(HMODULE hDll, DWORD dwReason, LPVOID lpReserved)
 {
 	if (dwReason == DLL_PROCESS_ATTACH)
 	{
-		Breakpoint = new cBreakpoint();
 		Strings = new cStrings();
-		CreateThread(0, 0, dwStart, 0, 0, 0);
+		CreateThread(0, 0, dwMainThread, 0, 0, 0);
 	}
 
 	return true;

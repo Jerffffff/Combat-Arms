@@ -5,9 +5,9 @@ extern "C"
 	DWORD cBreakpoint::dwAddress1, cBreakpoint::dwAddress2, cBreakpoint::dwAddress3, cBreakpoint::dwAddress4;
 	DWORD cBreakpoint::dwEIP1, cBreakpoint::dwEIP2, cBreakpoint::dwEIP3, cBreakpoint::dwEIP4;
 
-	cBreakpoint::cBreakpoint(HANDLE hThread = NULL)
+	cBreakpoint::cBreakpoint(HANDLE hThread)
 	{
-		hThread == NULL ? GetMainThreadFromCurrentProcess() : thread = hThread;
+		thread = hThread;
 		dwAddress1 = dwAddress2 = dwAddress3 = dwAddress4 = NULL;
 		dwEIP1 = dwEIP2 = dwEIP3 = dwEIP4 = NULL;
 		hwBP = NULL;
