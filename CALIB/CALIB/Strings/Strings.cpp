@@ -27,6 +27,7 @@ extern "C"
 		Assign(&MASK_GETLOCALPLAYER, /*xxxxxxxxxx*/XorStr<0xA2, 11, 0xB2613BE4>("\xDA\xDB\xDC\xDD\xDE\xDF\xD0\xD1\xD2\xD3" + 0xB2613BE4).s);
 		Assign(&MASK_CLIENTINFOMGR, /*xx????xxxxxx????*/XorStr<0x71, 17, 0x3157B1C1>("\x09\x0A\x4C\x4B\x4A\x49\x0F\x00\x01\x02\x03\x04\x42\x41\x40\xBF" + 0x3157B1C1).s);
 		Assign(&MASK_LTCOMMON, /*xx????xxxxx*/XorStr<0x71, 12, 0x6BDB35FD>("\x09\x0A\x4C\x4B\x4A\x49\x0F\x00\x01\x02\x03" + 0x6BDB35FD).s);
+		Assign(&MASK_SENDTOSERVER, /*xxx????xx????xxxx*/XorStr<0xE1, 18, 0xBCEDC09A>("\x99\x9A\x9B\xDB\xDA\xD9\xD8\x90\x91\xD5\xD4\xD3\xD2\x96\x97\x88\x89" + 0xBCEDC09A).s);
 	}
 
 	/*
