@@ -1,4 +1,5 @@
 #include "CALIB.h"
+cBreakpoint* Breakpoint;
 
 DWORD dwAmmoJMP;
 __declspec(naked) void __stdcall vAmmo()
@@ -10,27 +11,27 @@ LONG WINAPI ExceptionFilter(EXCEPTION_POINTERS* ExceptionInfo)
 {
 	if (ExceptionInfo->ExceptionRecord->ExceptionCode == EXCEPTION_SINGLE_STEP)
 	{
-		if (Breakpoint->dwAddress1 != NULL && (DWORD)ExceptionInfo->ExceptionRecord->ExceptionAddress == dwAddress1)
+		if (Breakpoint->dwAddress1 != NULL && (DWORD)ExceptionInfo->ExceptionRecord->ExceptionAddress == Breakpoint->dwAddress1)
 		{
-			ExceptionInfo->ContextRecord->Eip = dwEIP1;
+			ExceptionInfo->ContextRecord->Eip = Breakpoint->dwEIP1;
 			return EXCEPTION_CONTINUE_EXECUTION;
 		}
 
-		if (dwAddress2 != NULL && (DWORD)ExceptionInfo->ExceptionRecord->ExceptionAddress == dwAddress2)
+		if (Breakpoint->dwAddress2 != NULL && (DWORD)ExceptionInfo->ExceptionRecord->ExceptionAddress == Breakpoint->dwAddress2)
 		{
-			ExceptionInfo->ContextRecord->Eip = dwEIP2;
+			ExceptionInfo->ContextRecord->Eip = Breakpoint->dwEIP2;
 			return EXCEPTION_CONTINUE_EXECUTION;
 		}
 
-		if (dwAddress3 != NULL && (DWORD)ExceptionInfo->ExceptionRecord->ExceptionAddress == dwAddress3)
+		if (Breakpoint->dwAddress3 != NULL && (DWORD)ExceptionInfo->ExceptionRecord->ExceptionAddress == Breakpoint->dwAddress3)
 		{
-			ExceptionInfo->ContextRecord->Eip = dwEIP3;
+			ExceptionInfo->ContextRecord->Eip = Breakpoint->dwEIP3;
 			return EXCEPTION_CONTINUE_EXECUTION;
 		}
 
-		if (dwAddress4 != NULL && (DWORD)ExceptionInfo->ExceptionRecord->ExceptionAddress == dwAddress4)
+		if (Breakpoint->dwAddress4 != NULL && (DWORD)ExceptionInfo->ExceptionRecord->ExceptionAddress == Breakpoint->dwAddress4)
 		{
-			ExceptionInfo->ContextRecord->Eip = dwEIP4;
+			ExceptionInfo->ContextRecord->Eip = Breakpoint->dwEIP4;
 			return EXCEPTION_CONTINUE_EXECUTION;
 		}
 	}
@@ -38,7 +39,6 @@ LONG WINAPI ExceptionFilter(EXCEPTION_POINTERS* ExceptionInfo)
 	return EXCEPTION_CONTINUE_SEARCH;
 }
 
-cBreakpoint* Breakpoint;
 DWORD _stdcall dwStart(LPVOID)
 {
 	Strings = new cStrings();
@@ -49,15 +49,15 @@ DWORD _stdcall dwStart(LPVOID)
 
 	Memory = new cMemory();
 
-	dwAmmoJMP = Memory->ADDRESS_AMMO + 0xB;
-	Breakpoint->SetBreakPoint1(Memory->ADDRESS_AMMO, DWORD(&vAmmo));
-
 	char* buf = new char[256];
 	sprintf(buf, "0x%X : 0x%X", Memory->ADDRESS_AMMO, dwAmmoJMP);
 	MessageBox(0, buf, 0, 0);
 	delete[] buf;
 
-	Breakpoint->SetBreakPoints();
+	dwAmmoJMP = Memory->ADDRESS_AMMO + 0xB;
+	Breakpoint->SetBreakPoint1(Memory->ADDRESS_AMMO, DWORD(&vAmmo));
+
+	Breakpoint->SetBreakPoints(ExceptionFilter);
 
 	return NULL;
 }
