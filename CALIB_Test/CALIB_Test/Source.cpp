@@ -71,9 +71,48 @@ DWORD _stdcall dwBreakpoint1Thread(LPVOID)
 
 	Breakpoint1->Enable();
 
+	for (int i = 0; i < Memory->WeaponMgr->iWeaponCount; i++)
+	{
+		cWeaponInfo* wep = Memory->WeaponMgr->pWeaponInfo[i];
+
+		if (!IsBadReadPtr(wep, 4))
+		{
+			wep->fTripleShotMaxCamRecoilPitch = 0;
+			wep->fTripleShotBaseCamRecoilPitch = 0;
+			wep->fBaseCamRecoilPitch = 0;
+			wep->fBaseCamRecoilAccelPitch = 0;
+
+			wep->fDuckPerturb = 0;
+			wep->fMoveDuckPerturb = 0;
+			wep->fPerturbIncSpeed = 0;
+			wep->fPerturbDecSpeed = 0;
+			wep->fZoomedPerturbIncSpeed = 0;
+			wep->fZoomedPerturbDecSpeed = 0;
+			wep->fTripleShotPerturbIncSpeed = 0;
+			wep->fTripleShotPerturbDecSpeed = 0;
+			wep->dwTripleShotMinPerturb = 0;
+			wep->dwTripleShotMaxPerturb = 0;
+			wep->dwMaxPerturb = 0;
+			wep->dwMinPerturb = 0;
+			wep->dwZoomedMaxPerturb = 0;
+			wep->dwZoomedMinPerturb = 0;
+
+			wep->dwRange = 999999999;
+			wep->dwEffectRange = 999999999;
+
+			wep->fZoomTime = 0;
+
+			wep->fCameraSwayXFreq = 0;
+			wep->fCameraSwayXFreq = 0;
+		}
+	}
+
 	while (1)
 	{
 		*(float*)Memory->ADDRESS_PICKUPDISTANCE = 999999999.0f;
+
+		if (GetAsyncKeyState(VK_LBUTTON) < 0)
+			Memory->PlayerMgr->FireCurrentWeapon();
 
 		if (GetAsyncKeyState(VK_SPACE) < 0 && bFly)
 		{
