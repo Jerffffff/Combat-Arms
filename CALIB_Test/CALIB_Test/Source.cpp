@@ -41,22 +41,15 @@ DWORD _stdcall dwBreakpoint1Thread(LPVOID)
 
 	Memory = new cMemory();
 
+	Breakpoint1 = new cBreakpoint();
+	dwFireWeaponJMP = Memory->ADDRESS_FIREWEAPON + 1;
+	Breakpoint1->SetBreakPoint1(Memory->ADDRESS_FIREWEAPON, DWORD(&vFireWeapon));
+	dwAmmoJMP = Memory->ADDRESS_AMMO + 0xB;
+	Breakpoint1->SetBreakPoint2(Memory->ADDRESS_AMMO, DWORD(&vAmmo));
+	Breakpoint1->Enable();
+
 	while (1)
 	{
-		if (!Breakpoint1)
-		{
-			Breakpoint1 = new cBreakpoint();
-
-			dwFireWeaponJMP = Memory->ADDRESS_FIREWEAPON + 1;
-			Breakpoint1->SetBreakPoint1(Memory->ADDRESS_FIREWEAPON, DWORD(&vFireWeapon));
-
-			dwAmmoJMP = Memory->ADDRESS_AMMO + 0xB;
-			Breakpoint1->SetBreakPoint2(Memory->ADDRESS_AMMO, DWORD(&vAmmo));
-
-			Breakpoint1->Enable();
-
-			//MessageBox(0, 0, 0, 0);
-		}
 
 		Sleep(5);
 	}
