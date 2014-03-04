@@ -33,8 +33,14 @@ __declspec(naked) void __stdcall vAmmo()
 	__asm JMP dwAmmoJMP;
 }
 
+bool bEnabled = false;
 DWORD _stdcall dwBreakpoint1Thread(LPVOID)
 {
+	while (!GetModuleHandle(Strings->MODULE_CLIENTFX))
+		Sleep(250);
+
+	Memory = new cMemory();
+
 	while (1)
 	{
 		if (!Breakpoint1)
@@ -49,36 +55,10 @@ DWORD _stdcall dwBreakpoint1Thread(LPVOID)
 
 			Breakpoint1->Enable();
 
-			MessageBox(0, 0, 0, 0);
-		}
-	}
-
-	return NULL;
-}
-
-bool bEnabled = false;
-DWORD _stdcall dwMainThread(LPVOID)
-{
-	while (!GetModuleHandle(Strings->MODULE_CLIENTFX))
-		Sleep(250);
-
-	Memory = new cMemory();
-
-	CreateThread(0, 0, dwBreakpoint1Thread, 0, 0, 0);
-	Sleep(1000);
-
-	while (1)
-	{
-		if (GetAsyncKeyState(VK_INSERT) & 1)
-		{
-			bEnabled = !bEnabled;
-			if (bEnabled)
-				Breakpoint1->Enable();
-			else
-				Breakpoint1->Disable();
+			//MessageBox(0, 0, 0, 0);
 		}
 
-		Sleep(100);
+		Sleep(5);
 	}
 
 	return NULL;
@@ -89,7 +69,7 @@ bool _stdcall DllMain(HMODULE hDll, DWORD dwReason, LPVOID lpReserved)
 	if (dwReason == DLL_PROCESS_ATTACH)
 	{
 		Strings = new cStrings();
-		CreateThread(0, 0, dwMainThread, 0, 0, 0);
+		CreateThread(0, 0, dwBreakpoint1Thread, 0, 0, 0);
 	}
 
 	return true;

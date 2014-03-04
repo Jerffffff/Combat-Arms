@@ -15,7 +15,7 @@ private:
 	PVOID hwBP;
 	void GetMainThreadFromCurrentProcess();
 public:
-	cBreakpoint(HANDLE hThread);
+	cBreakpoint(DWORD ThreadID = NULL);
 
 	static LONG WINAPI ExceptionFilter(EXCEPTION_POINTERS* ExceptionInfo);
 
