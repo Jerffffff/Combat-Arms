@@ -29,6 +29,8 @@ extern "C"
 		ADDRESS_WEAPONMGR = *(DWORD*)(ADDRESS_WEAPONMGR + 2);
 
 		ADDRESS_FIREWEAPON = scan(&MODULE_CSHELL, (PBYTE)"\x50\x8B\x82\x00\x00\x00\x00\xC6\x44\x24\x30\x01\xFF\xD0\x8B\x4C\x24\x38", Strings->MASK_FIREWEAPON);
+
+		ADDRESS_AMMO = scan(&MODULE_CSHELL, (PBYTE)"\x74\x09\x8B\x06\x8B\x50\x30", Strings->MASK_AMMO);
 	}
 
 	bool cMemory::compare(const BYTE* pData, const BYTE* bMask, const char* szMask)
