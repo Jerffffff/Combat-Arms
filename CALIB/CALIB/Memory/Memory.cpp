@@ -26,11 +26,6 @@ extern "C"
 		ADDRESS_GAMECLIENTSHELL = *(DWORD*)(ADDRESS_GAMECLIENTSHELL + 2);
 	}
 
-	cMemory::~cMemory()
-	{
-		// TODO: Delete all address variables from memory.
-	}
-
 	bool cMemory::compare(const BYTE* pData, const BYTE* bMask, const char* szMask)
 	{
 		for (; *szMask; ++szMask, ++pData, ++bMask)
