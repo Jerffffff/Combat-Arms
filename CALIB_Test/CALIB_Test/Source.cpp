@@ -1,5 +1,5 @@
 #include "CALIB.h"
-cBreakpoint* Breakpoint1, *Breakpoint2;
+cBreakpoint* Breakpoint1 = NULL;
 
 DWORD dwFireWeaponJMP;
 __declspec(naked) void __stdcall vFireWeapon()
@@ -35,17 +35,22 @@ __declspec(naked) void __stdcall vAmmo()
 
 DWORD _stdcall dwBreakpoint1Thread(LPVOID)
 {
-	Breakpoint1 = new cBreakpoint(GetCurrentThread());
-
-	dwFireWeaponJMP = Memory->ADDRESS_FIREWEAPON + 1;
-	Breakpoint1->SetBreakPoint1(Memory->ADDRESS_FIREWEAPON, DWORD(&vFireWeapon));
-
-	dwAmmoJMP = Memory->ADDRESS_AMMO + 0xB;
-	Breakpoint1->SetBreakPoint2(Memory->ADDRESS_AMMO, DWORD(&vAmmo));
-
 	while (1)
 	{
-		//Sleep(1);
+		if (!Breakpoint1)
+		{
+			Breakpoint1 = new cBreakpoint(GetCurrentThread());
+
+			dwFireWeaponJMP = Memory->ADDRESS_FIREWEAPON + 1;
+			Breakpoint1->SetBreakPoint1(Memory->ADDRESS_FIREWEAPON, DWORD(&vFireWeapon));
+
+			dwAmmoJMP = Memory->ADDRESS_AMMO + 0xB;
+			Breakpoint1->SetBreakPoint2(Memory->ADDRESS_AMMO, DWORD(&vAmmo));
+
+			Breakpoint1->Enable();
+
+			MessageBox(0, 0, 0, 0);
+		}
 	}
 
 	return NULL;

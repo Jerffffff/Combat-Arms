@@ -64,7 +64,7 @@ extern "C"
 
 	void cBreakpoint::Disable()
 	{
-		SuspendThread(thread);
+		//SuspendThread(thread);
 		thread_context = { CONTEXT_DEBUG_REGISTERS };
 		thread_context.Dr0 = NULL;
 		thread_context.Dr1 = NULL;
@@ -72,15 +72,13 @@ extern "C"
 		thread_context.Dr3 = NULL;
 		thread_context.Dr7 = NULL;
 		SetThreadContext(thread, &thread_context);
-		ResumeThread(thread);
-		CloseHandle(thread);
-		thread = NULL;
+		//ResumeThread(thread);
 		RemoveVectoredExceptionHandler(hwBP);
 	}
 
 	void cBreakpoint::Enable()
 	{
-		SuspendThread(thread);
+		//SuspendThread(thread);
 		hwBP = AddVectoredExceptionHandler(rand() % 10000, ExceptionFilter);
 
 		thread_context = { CONTEXT_DEBUG_REGISTERS };
@@ -93,7 +91,7 @@ extern "C"
 			dwAddress2 != NULL ? (1 << 0) | (1 << 2) :
 			dwAddress1 != NULL ? (1 << 0) : NULL;
 		SetThreadContext(thread, &thread_context);
-		ResumeThread(thread);
+		//ResumeThread(thread);
 	}
 
 	LONG WINAPI cBreakpoint::ExceptionFilter(EXCEPTION_POINTERS* ExceptionInfo)
