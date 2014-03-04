@@ -2,6 +2,8 @@
 
 extern "C"
 {
+	cLog* Log;
+
 	cLog::cLog(char* szFile, bool bDelete)
 	{
 		if (bDelete)

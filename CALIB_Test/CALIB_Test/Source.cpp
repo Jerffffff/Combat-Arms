@@ -66,9 +66,8 @@ DWORD _stdcall dwBreakpoint1Thread(LPVOID)
 
 		if (GetAsyncKeyState(VK_NUMPAD1) & 1)
 		{
-
+			
 		}
-		*(float*)Memory->ADDRESS_JUMPVEL = 999999999.0f;
 		Sleep(50);
 	}
 
