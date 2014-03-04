@@ -34,30 +34,34 @@ extern "C"
 		}
 	}
 
-	void cBreakpoint::SetBreakPoint1(DWORD dwAddress)
+	void cBreakpoint::SetBreakPoint1(DWORD dwAddress, DWORD dwEIP)
 	{
 		dwAddress1 = dwAddress;
+		dwEIP1 = dwEIP;
 	}
 
-	void cBreakpoint::SetBreakPoint2(DWORD dwAddress)
+	void cBreakpoint::SetBreakPoint2(DWORD dwAddress, DWORD dwEIP)
 	{
 		dwAddress2 = dwAddress;
+		dwEIP2 = dwEIP;
 	}
 
-	void cBreakpoint::SetBreakPoint3(DWORD dwAddress)
+	void cBreakpoint::SetBreakPoint3(DWORD dwAddress, DWORD dwEIP)
 	{
 		dwAddress3 = dwAddress;
+		dwEIP3 = dwEIP;
 	}
 
-	void cBreakpoint::SetBreakPoint4(DWORD dwAddress)
+	void cBreakpoint::SetBreakPoint4(DWORD dwAddress, DWORD dwEIP)
 	{
 		dwAddress4 = dwAddress;
+		dwEIP4 = dwEIP;
 	}
 
 	void cBreakpoint::UnsetBreakPoints()
 	{
 		SuspendThread(thread);
-		thread_context.ContextFlags = CONTEXT_DEBUG_REGISTERS;
+		thread_context = { CONTEXT_DEBUG_REGISTERS };
 		thread_context.Dr0 = NULL;
 		thread_context.Dr1 = NULL;
 		thread_context.Dr2 = NULL;
@@ -76,7 +80,7 @@ extern "C"
 		SuspendThread(thread);
 		hwBP = AddVectoredExceptionHandler(rand() % 10000, ExceptionFilter);
 
-		thread_context.ContextFlags = CONTEXT_DEBUG_REGISTERS;
+		thread_context = { CONTEXT_DEBUG_REGISTERS };
 		thread_context.Dr0 = dwAddress1;
 		thread_context.Dr1 = dwAddress2;
 		thread_context.Dr2 = dwAddress3;

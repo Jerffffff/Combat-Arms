@@ -19,13 +19,13 @@ public:
 
 	static LONG WINAPI ExceptionFilter(EXCEPTION_POINTERS* ExceptionInfo);
 
-	void SetBreakPoint1(DWORD dwAddress);
-	void SetBreakPoint2(DWORD dwAddress);
-	void SetBreakPoint3(DWORD dwAddress);
-	void SetBreakPoint4(DWORD dwAddress);
+	void SetBreakPoint1(DWORD dwAddress, DWORD dwEIP);
+	void SetBreakPoint2(DWORD dwAddress, DWORD dwEIP);
+	void SetBreakPoint3(DWORD dwAddress, DWORD dwEIP);
+	void SetBreakPoint4(DWORD dwAddress, DWORD dwEIP);
 
 	void SetBreakPoints(HANDLE hThread = NULL);
 	void UnsetBreakPoints();
-}; cBreakpoint* Breakpoint;
+};
 
 #endif

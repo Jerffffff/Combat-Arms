@@ -1,5 +1,12 @@
 #include "CALIB.h"
 
+DWORD dwAmmoJMP;
+__declspec(naked) void __stdcall vAmmo()
+{
+	__asm JMP dwAmmoJMP;
+}
+
+cBreakpoint* Breakpoint;
 DWORD _stdcall dwStart(LPVOID)
 {
 	Strings = new cStrings();
@@ -8,6 +15,9 @@ DWORD _stdcall dwStart(LPVOID)
 		Sleep(250);
 
 	Memory = new cMemory();
+
+	Breakpoint = new cBreakpoint();
+	Breakpoint->SetBreakPoint1(Memory->ADDRESS_AMMO, DWORD(&vAmmo));
 
 	return NULL;
 }
