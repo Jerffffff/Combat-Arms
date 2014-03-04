@@ -5,9 +5,9 @@ extern "C"
 	DWORD cBreakpoint::dwAddress1, cBreakpoint::dwAddress2, cBreakpoint::dwAddress3, cBreakpoint::dwAddress4;
 	DWORD cBreakpoint::dwEIP1, cBreakpoint::dwEIP2, cBreakpoint::dwEIP3, cBreakpoint::dwEIP4;
 
-	cBreakpoint::cBreakpoint()
+	cBreakpoint::cBreakpoint(HANDLE hThread = NULL)
 	{
-		thread = NULL;
+		hThread == NULL ? GetMainThreadFromCurrentProcess() : thread = hThread;
 		dwAddress1 = dwAddress2 = dwAddress3 = dwAddress4 = NULL;
 		dwEIP1 = dwEIP2 = dwEIP3 = dwEIP4 = NULL;
 		hwBP = NULL;
@@ -62,7 +62,7 @@ extern "C"
 		dwEIP4 = dwEIP;
 	}
 
-	void cBreakpoint::UnsetBreakPoints()
+	void cBreakpoint::Disable()
 	{
 		SuspendThread(thread);
 		thread_context = { CONTEXT_DEBUG_REGISTERS };
@@ -78,9 +78,8 @@ extern "C"
 		RemoveVectoredExceptionHandler(hwBP);
 	}
 
-	void cBreakpoint::SetBreakPoints(HANDLE hThread)
+	void cBreakpoint::Enable()
 	{
-		hThread != NULL ? thread = hThread : GetMainThreadFromCurrentProcess();
 		SuspendThread(thread);
 		hwBP = AddVectoredExceptionHandler(rand() % 10000, ExceptionFilter);
 
