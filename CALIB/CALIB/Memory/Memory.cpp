@@ -42,11 +42,37 @@ extern "C"
 		return (*szMask) == NULL;
 	}
 
-	DWORD cMemory::Scan(MODULEINFO* mInfo, BYTE *bMask, char * szMask)
+	DWORD cMemory::Scan(MODULEINFO* mInfo, BYTE* bMask, char* szMask)
 	{
 		for (DWORD i = 0; i < mInfo->SizeOfImage; i++)
 		if (Compare((BYTE*)((DWORD)mInfo->lpBaseOfDll + i), bMask, szMask))
 			return (DWORD)((DWORD)mInfo->lpBaseOfDll + i);
-		return 0;
+		return NULL;
+	}
+
+	DWORD cMemory::Scan(DWORD dwAddress, DWORD dwLen, BYTE* bMask, char* szMask)
+	{
+		for (DWORD i = 0; i < dwLen; i++)
+		if (Compare((BYTE*)(dwAddress + i), bMask, szMask))
+			return (DWORD)(dwAddress + i);
+		return NULL;
+	}
+
+	DWORD cMemory::Scan(MODULEINFO* pInfo, BYTE* bMask, char* szMask, int index)
+	{
+		DWORD ret = NULL;
+		DWORD dwAddress = (DWORD)pInfo->lpBaseOfDll;
+		for (int i = 0; i <= index;)
+		{
+			ret = Scan(dwAddress, pInfo->SizeOfImage, bMask, szMask);
+			if (ret)
+			{
+				dwAddress = ret + 1;
+				++i;
+			}
+			else break;
+		}
+
+		return ret;
 	}
 }

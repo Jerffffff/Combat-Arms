@@ -18,7 +18,9 @@ public:
 	~cMemory();
 
 	bool Compare(const BYTE* pData, const BYTE* bMask, const char* szMask);
-	DWORD Scan(MODULEINFO* mInfo, BYTE *bMask, char * szMask);
+	DWORD Scan(MODULEINFO* mInfo, BYTE* bMask, char* szMask);
+	DWORD Scan(DWORD dwAddress, DWORD dwLen, BYTE* bMask, char* szMask);
+	DWORD Scan(MODULEINFO* mInfo, BYTE* bMask, char* szMask, int index);
 }; extern cMemory* Memory;
 
 #endif
