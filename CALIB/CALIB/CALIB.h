@@ -8,6 +8,7 @@
 #include "Breakpoint\Breakpoint.h"
 #include "Memory\Memory.h"
 #include "Log\Log.h"
+#include "Directx\Directx.h"
 
 #include "SDK\message.h"
 
