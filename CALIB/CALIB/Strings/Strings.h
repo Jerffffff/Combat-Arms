@@ -47,7 +47,7 @@ private:
 public:
 	char* szAssign;
 	char* MODULE_D3D9, *MODULE_CSHELL, *MODULE_ENGINE, *MODULE_CLIENTFX;
-	char* MASK_GAMESTATUS, *MASK_LTCLIENT;
+	char* MASK_GAMESTATUS, *MASK_LTCLIENT, *MASK_GAMECLIENTSHELL;
 
 	cStrings();
 	~cStrings();

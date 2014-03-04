@@ -17,15 +17,13 @@ extern "C"
 		GetModuleInformation(GetCurrentProcess(), GetModuleHandle(Strings->MODULE_CLIENTFX), &MODULE_CLIENTFX, sizeof(MODULEINFO));
 
 		ADDRESS_GAMESTATUS = scan(&MODULE_CSHELL, (PBYTE)"\x8B\x0D\x00\x00\x00\x00\x83\x79\x04\x00\x74", Strings->MASK_GAMESTATUS);
-		ADDRESS_GAMESTATUS = (**(DWORD**)(ADDRESS_GAMESTATUS + 0x2)) - 0x4;
+		ADDRESS_GAMESTATUS = (**(DWORD**)(ADDRESS_GAMESTATUS + 2)) - 4;
 
 		ADDRESS_LTCLIENT = scan(&MODULE_CSHELL, PBYTE("\x8B\x0D\x00\x00\x00\x00\x8B\x01\x8B\x50\x70"), Strings->MASK_LTCLIENT);
 		ADDRESS_LTCLIENT = *(DWORD*)(ADDRESS_LTCLIENT + 2);
 
-		char* buf = new char[12];
-		sprintf(buf, "0x%X", ADDRESS_GAMESTATUS);
-		MessageBox(0, buf, 0, 0);
-		delete[] buf;
+		ADDRESS_GAMECLIENTSHELL = scan(&MODULE_CSHELL, (PBYTE)"\x8B\x0D\x00\x00\x00\x00\x8B\x01\x8B\x90\x00\x00\x00\x00\xFF\xD2\x8B\xD8\x85\xDB\x0F\x84\x00\x00\x00\x00\x8B\x86\x00\x00\x00\x00\x8B\x0D\x00\x00\x00\x00\x50\x33\xFF", Strings->MASK_GAMECLIENTSHELL);
+		ADDRESS_GAMECLIENTSHELL = *(DWORD*)(ADDRESS_GAMECLIENTSHELL + 2);
 	}
 
 	cMemory::~cMemory()

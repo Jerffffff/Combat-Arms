@@ -19,6 +19,7 @@ extern "C"
 
 		Assign(&MASK_GAMESTATUS, /*xx????xxxxx*/XorStr<0xD5, 12, 0x3B199A44>("\xAD\xAE\xE8\xE7\xE6\xE5\xA3\xA4\xA5\xA6\xA7" + 0x3B199A44).s);
 		Assign(&MASK_LTCLIENT, /*xx????xxxxx*/XorStr<0x32, 12, 0xAEC375A2>("\x4A\x4B\x0B\x0A\x09\x08\x40\x41\x42\x43\x44" + 0xAEC375A2).s);
+		Assign(&MASK_GAMECLIENTSHELL, /*xx????xxxx????xxxxxxxx????xx????xx????xx*/XorStr<0xDF, 41, 0x82A604DB>("\xA7\x98\xDE\xDD\xDC\xDB\x9D\x9E\x9F\x90\xD6\xD5\xD4\xD3\x95\x96\x97\x88\x89\x8A\x8B\x8C\xCA\xC9\xC8\xC7\x81\x82\xC4\xC3\xC2\xC1\x87\x78\x3E\x3D\x3C\x3B\x7D\x7E" + 0x82A604DB).s);
 	}
 
 	/*
@@ -38,7 +39,7 @@ extern "C"
 	*/
 	void cStrings::Assign(char** szVar, char* szBuf)
 	{
-		*szVar = new char[64];
+		*szVar = new char[128];
 		sprintf(*szVar, szAssign, szBuf);
 	}
 }
