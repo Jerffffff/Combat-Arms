@@ -2,14 +2,12 @@
 
 extern "C"
 {
-	DWORD cBreakpoint::dwAddress1, cBreakpoint::dwAddress2, cBreakpoint::dwAddress3, cBreakpoint::dwAddress4;
-	DWORD cBreakpoint::dwEIP1, cBreakpoint::dwEIP2, cBreakpoint::dwEIP3, cBreakpoint::dwEIP4;
-
 	cBreakpoint::cBreakpoint()
 	{
 		thread = NULL;
 		dwAddress1 = dwAddress2 = dwAddress3 = dwAddress4 = NULL;
 		dwEIP1 = dwEIP2 = dwEIP3 = dwEIP4 = NULL;
+		handler = NULL;
 		hwBP = NULL;
 	}
 
@@ -78,11 +76,11 @@ extern "C"
 		RemoveVectoredExceptionHandler(hwBP);
 	}
 
-	void cBreakpoint::SetBreakPoints(HANDLE hThread)
+	void cBreakpoint::SetBreakPoints(PVECTORED_EXCEPTION_HANDLER pHandler, HANDLE hThread)
 	{
 		hThread != NULL ? thread = hThread : GetMainThreadFromCurrentProcess();
 		SuspendThread(thread);
-		hwBP = AddVectoredExceptionHandler(rand() % 10000, ExceptionFilter);
+		hwBP = AddVectoredExceptionHandler(rand() % 10000, pHandler);
 
 		thread_context = { CONTEXT_DEBUG_REGISTERS };
 		thread_context.Dr0 = dwAddress1;
@@ -95,37 +93,5 @@ extern "C"
 			dwAddress1 != NULL ? (1 << 0) : NULL;
 		SetThreadContext(thread, &thread_context);
 		ResumeThread(thread);
-	}
-
-	LONG WINAPI cBreakpoint::ExceptionFilter(EXCEPTION_POINTERS* ExceptionInfo)
-	{
-		if (ExceptionInfo->ExceptionRecord->ExceptionCode == EXCEPTION_SINGLE_STEP)
-		{
-			if (dwAddress1 != NULL && (DWORD)ExceptionInfo->ExceptionRecord->ExceptionAddress == dwAddress1)
-			{
-				ExceptionInfo->ContextRecord->Eip = dwEIP1;
-				return EXCEPTION_CONTINUE_EXECUTION;
-			}
-
-			if (dwAddress2 != NULL && (DWORD)ExceptionInfo->ExceptionRecord->ExceptionAddress == dwAddress2)
-			{
-				ExceptionInfo->ContextRecord->Eip = dwEIP2;
-				return EXCEPTION_CONTINUE_EXECUTION;
-			}
-
-			if (dwAddress3 != NULL && (DWORD)ExceptionInfo->ExceptionRecord->ExceptionAddress == dwAddress3)
-			{
-				ExceptionInfo->ContextRecord->Eip = dwEIP3;
-				return EXCEPTION_CONTINUE_EXECUTION;
-			}
-
-			if (dwAddress4 != NULL && (DWORD)ExceptionInfo->ExceptionRecord->ExceptionAddress == dwAddress4)
-			{
-				ExceptionInfo->ContextRecord->Eip = dwEIP4;
-				return EXCEPTION_CONTINUE_EXECUTION;
-			}
-		}
-
-		return EXCEPTION_CONTINUE_SEARCH;
 	}
 }
