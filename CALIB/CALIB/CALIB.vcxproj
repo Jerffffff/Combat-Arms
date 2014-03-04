@@ -13,11 +13,13 @@
   <ItemGroup>
     <ClInclude Include="Breakpoint\Breakpoint.h" />
     <ClInclude Include="CALIB.h" />
+    <ClInclude Include="Log\Log.h" />
     <ClInclude Include="Memory\Memory.h" />
     <ClInclude Include="Strings\Strings.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Breakpoint\Breakpoint.cpp" />
+    <ClCompile Include="Log\Log.cpp" />
     <ClCompile Include="Memory\Memory.cpp" />
     <ClCompile Include="Strings\Strings.cpp" />
   </ItemGroup>

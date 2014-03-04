@@ -7,7 +7,7 @@ extern "C"
 
 	cBreakpoint::cBreakpoint(DWORD ThreadID)
 	{
-		hwBP = AddVectoredExceptionHandler(rand() % 10000, ExceptionFilter);
+		hwBP = AddVectoredExceptionHandler(1029, ExceptionFilter);
 
 		if (ThreadID)
 			thread = OpenThread(THREAD_GET_CONTEXT | THREAD_SET_CONTEXT | THREAD_SUSPEND_RESUME, 1, ThreadID);

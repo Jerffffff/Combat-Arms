@@ -33,7 +33,13 @@ __declspec(naked) void __stdcall vAmmo()
 	__asm JMP dwAmmoJMP;
 }
 
-bool bEnabled = false;
+DWORD dwSuperBulletsJMP;
+__declspec(naked) void __stdcall vSuperBullets()
+{
+	__asm JMP dwSuperBulletsJMP;
+}
+
+bool bSuperJump = false;
 DWORD _stdcall dwBreakpoint1Thread(LPVOID)
 {
 	while (!GetModuleHandle(Strings->MODULE_CLIENTFX))
@@ -42,16 +48,28 @@ DWORD _stdcall dwBreakpoint1Thread(LPVOID)
 	Memory = new cMemory();
 
 	Breakpoint1 = new cBreakpoint();
+
 	dwFireWeaponJMP = Memory->ADDRESS_FIREWEAPON + 1;
 	Breakpoint1->SetBreakPoint1(Memory->ADDRESS_FIREWEAPON, DWORD(&vFireWeapon));
+
 	dwAmmoJMP = Memory->ADDRESS_AMMO + 0xB;
 	Breakpoint1->SetBreakPoint2(Memory->ADDRESS_AMMO, DWORD(&vAmmo));
+
+	dwSuperBulletsJMP = Memory->ADDRESS_SUPERBULLETS + 3;
+	Breakpoint1->SetBreakPoint3(Memory->ADDRESS_SUPERBULLETS, DWORD(&vSuperBullets));
+
 	Breakpoint1->Enable();
 
 	while (1)
 	{
+		*(float*)Memory->ADDRESS_PICKUPDISTANCE = 999999999.0f;
 
-		Sleep(5);
+		if (GetAsyncKeyState(VK_NUMPAD1) & 1)
+		{
+
+		}
+		*(float*)Memory->ADDRESS_JUMPVEL = 999999999.0f;
+		Sleep(50);
 	}
 
 	return NULL;

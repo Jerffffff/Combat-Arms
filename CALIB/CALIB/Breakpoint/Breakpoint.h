@@ -1,6 +1,9 @@
 #ifndef _BREAKPOINT_
 #define _BREAKPOINT_
 
+#define WIN32_LEAN_AND_MEAN
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <Windows.h>
 #include <Psapi.h>
 #include <TlHelp32.h>

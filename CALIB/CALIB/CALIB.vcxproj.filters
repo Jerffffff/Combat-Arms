@@ -12,6 +12,9 @@
     <Filter Include="Breakpoint">
       <UniqueIdentifier>{2674ae3c-43e7-486a-aab7-4a457a598475}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Log">
+      <UniqueIdentifier>{efaae973-0f48-45f9-830e-96553bb59c5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CALIB.h" />
@@ -24,6 +27,9 @@
     <ClInclude Include="Breakpoint\Breakpoint.h">
       <Filter>Breakpoint</Filter>
     </ClInclude>
+    <ClInclude Include="Log\Log.h">
+      <Filter>Log</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Strings\Strings.cpp">
@@ -34,6 +40,9 @@
     </ClCompile>
     <ClCompile Include="Breakpoint\Breakpoint.cpp">
       <Filter>Breakpoint</Filter>
+    </ClCompile>
+    <ClCompile Include="Log\Log.cpp">
+      <Filter>Log</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
