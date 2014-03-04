@@ -48,13 +48,12 @@ DWORD _stdcall dwStart(LPVOID)
 		Sleep(250);
 
 	Memory = new cMemory();
-
+	dwAmmoJMP = Memory->ADDRESS_AMMO + 0xB;
 	char* buf = new char[256];
 	sprintf(buf, "0x%X : 0x%X", Memory->ADDRESS_AMMO, dwAmmoJMP);
 	MessageBox(0, buf, 0, 0);
 	delete[] buf;
 
-	dwAmmoJMP = Memory->ADDRESS_AMMO + 0xB;
 	Breakpoint->SetBreakPoint1(Memory->ADDRESS_AMMO, DWORD(&vAmmo));
 
 	Breakpoint->SetBreakPoints(ExceptionFilter);
