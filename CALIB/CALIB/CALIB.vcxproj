@@ -19,12 +19,16 @@
     <ClInclude Include="Classes\SFXMgr.h" />
     <ClInclude Include="Classes\Structs.h" />
     <ClInclude Include="Classes\WeaponMgr.h" />
+    <ClInclude Include="Directx\Directx.h" />
+    <ClInclude Include="Directx\Font\Font.h" />
     <ClInclude Include="Log\Log.h" />
     <ClInclude Include="Memory\Memory.h" />
     <ClInclude Include="Strings\Strings.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Breakpoint\Breakpoint.cpp" />
+    <ClCompile Include="Directx\Directx.cpp" />
+    <ClCompile Include="Directx\Font\Font.cpp" />
     <ClCompile Include="Log\Log.cpp" />
     <ClCompile Include="Memory\Memory.cpp" />
     <ClCompile Include="Strings\Strings.cpp" />

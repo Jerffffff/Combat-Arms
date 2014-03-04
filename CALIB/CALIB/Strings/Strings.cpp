@@ -30,22 +30,13 @@ extern "C"
 		Assign(&MASK_SENDTOSERVER, /*xxx????xx????xxxx*/XorStr<0xE1, 18, 0xBCEDC09A>("\x99\x9A\x9B\xDB\xDA\xD9\xD8\x90\x91\xD5\xD4\xD3\xD2\x96\x97\x88\x89" + 0xBCEDC09A).s);
 		Assign(&MASK_SUPERBULLETS, /*xxxxxxxxxx*/XorStr<0x43, 11, 0xC397DE56>("\x3B\x3C\x3D\x3E\x3F\x30\x31\x32\x33\x34" + 0xC397DE56).s);
 		Assign(&MASK_GETFONTHANDLE, /*xxxxxxxxx????xx*/XorStr<0xC9, 16, 0x74D98710>("\xB1\xB2\xB3\xB4\xB5\xB6\xB7\xA8\xA9\xED\xEC\xEB\xEA\xAE\xAF" + 0x74D98710).s);
+		Assign(&MASK_BUILDFONT, /*xxxxxxxxxxx*/XorStr<0x5D, 12, 0x56FD221D>("\x25\x26\x27\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F" + 0x56FD221D).s);
+		Assign(&MASK_FILLFONT, /*xxx????xx????xxxxxxx????xxxxxxxxx????xxxxxxx????xx*/XorStr<0x56, 51, 0x4E6E11C0>("\x2E\x2F\x20\x66\x65\x64\x63\x25\x26\x60\x5F\x5E\x5D\x1B\x1C\x1D\x1E\x1F\x10\x11\x55\x54\x53\x52\x16\x17\x08\x09\x0A\x0B\x0C\x0D\x0E\x48\x47\x46\x45\x03\x04\x05\x06\x07\xF8\xF9\xBD\xBC\xBB\xBA\xFE\xFF" + 0x4E6E11C0).s);
+		Assign(&MASK_FONTECX, /*x????xx*/XorStr<0xAB, 8, 0x1E73DAF7>("\xD3\x93\x92\x91\x90\xC8\xC9" + 0x1E73DAF7).s);
 		Assign(&MASK_GRAVITY, /*xx????xxxxxxxxxxx*/XorStr<0x9A, 18, 0x20C51B31>("\xE2\xE3\xA3\xA2\xA1\xA0\xD8\xD9\xDA\xDB\xDC\xDD\xDE\xDF\xD0\xD1\xD2" + 0x20C51B31).s);
 		Assign(&MASK_JUMPVEL, /*xx????xx????xxxx*/XorStr<0x68, 17, 0x6FCADB2B>("\x10\x11\x55\x54\x53\x52\x16\x17\x4F\x4E\x4D\x4C\x0C\x0D\x0E\x0F" + 0x6FCADB2B).s);
 		Assign(&MASK_PICKUPDISTANCE, /*xx????xxxxxxxxxxxx*/XorStr<0x6E, 19, 0xF8DA0F59>("\x16\x17\x4F\x4E\x4D\x4C\x0C\x0D\x0E\x0F\x00\x01\x02\x03\x04\x05\x06\x07" + 0xF8DA0F59).s);
 		Assign(&MASK_ESP, /*xxx*/XorStr<0x8A, 4, 0xC1978229>("\xF2\xF3\xF4" + 0xC1978229).s);
-	}
-
-	/*
-	** Deletes the memory from all of the strings.
-	*/
-	cStrings::~cStrings()
-	{
-		delete[] szAssign;
-		delete[] MODULE_D3D9;
-		delete[] MODULE_CSHELL;
-		delete[] MODULE_ENGINE;
-		delete[] MODULE_CLIENTFX;
 	}
 
 	/*
