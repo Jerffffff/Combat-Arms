@@ -13,6 +13,12 @@
   <ItemGroup>
     <ClInclude Include="Breakpoint\Breakpoint.h" />
     <ClInclude Include="CALIB.h" />
+    <ClInclude Include="Classes\GameClientShell.h" />
+    <ClInclude Include="Classes\LTModel.h" />
+    <ClInclude Include="Classes\PlayerMgr.h" />
+    <ClInclude Include="Classes\SFXMgr.h" />
+    <ClInclude Include="Classes\Structs.h" />
+    <ClInclude Include="Classes\WeaponMgr.h" />
     <ClInclude Include="Log\Log.h" />
     <ClInclude Include="Memory\Memory.h" />
     <ClInclude Include="Strings\Strings.h" />
@@ -52,7 +58,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>

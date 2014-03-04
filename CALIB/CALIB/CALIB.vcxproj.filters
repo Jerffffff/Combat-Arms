@@ -15,6 +15,9 @@
     <Filter Include="Log">
       <UniqueIdentifier>{efaae973-0f48-45f9-830e-96553bb59c5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes">
+      <UniqueIdentifier>{1fda085b-1fd6-4bc5-b86b-794d0706479c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CALIB.h" />
@@ -29,6 +32,24 @@
     </ClInclude>
     <ClInclude Include="Log\Log.h">
       <Filter>Log</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\WeaponMgr.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\PlayerMgr.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\GameClientShell.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\SFXMgr.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\LTModel.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\Structs.h">
+      <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
