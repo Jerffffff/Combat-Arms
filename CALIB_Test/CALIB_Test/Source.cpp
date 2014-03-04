@@ -45,7 +45,7 @@ DWORD _stdcall dwBreakpoint1Thread(LPVOID)
 	{
 		if (!Breakpoint1)
 		{
-			Breakpoint1 = new cBreakpoint(GetCurrentThread());
+			Breakpoint1 = new cBreakpoint();
 
 			dwFireWeaponJMP = Memory->ADDRESS_FIREWEAPON + 1;
 			Breakpoint1->SetBreakPoint1(Memory->ADDRESS_FIREWEAPON, DWORD(&vFireWeapon));
