@@ -10,13 +10,14 @@ class cBreakpoint
 private:
 	HANDLE thread;
 	CONTEXT thread_context;
-	DWORD dwAddress1, dwAddress2, dwAddress3, dwAddress4;
-	DWORD dwEIP1, dwEIP2, dwEIP3, dwEIP4;
 	PVOID hwBP;
 	PVECTORED_EXCEPTION_HANDLER handler;
 	void GetMainThreadFromCurrentProcess();
 public:
 	cBreakpoint();
+
+	DWORD dwAddress1, dwAddress2, dwAddress3, dwAddress4;
+	DWORD dwEIP1, dwEIP2, dwEIP3, dwEIP4;
 
 	void SetBreakPoint1(DWORD dwAddress, DWORD dwEIP);
 	void SetBreakPoint2(DWORD dwAddress, DWORD dwEIP);

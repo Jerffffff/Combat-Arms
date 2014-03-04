@@ -10,7 +10,7 @@ LONG WINAPI ExceptionFilter(EXCEPTION_POINTERS* ExceptionInfo)
 {
 	if (ExceptionInfo->ExceptionRecord->ExceptionCode == EXCEPTION_SINGLE_STEP)
 	{
-		if (dwAddress1 != NULL && (DWORD)ExceptionInfo->ExceptionRecord->ExceptionAddress == dwAddress1)
+		if (Breakpoint->dwAddress1 != NULL && (DWORD)ExceptionInfo->ExceptionRecord->ExceptionAddress == dwAddress1)
 		{
 			ExceptionInfo->ContextRecord->Eip = dwEIP1;
 			return EXCEPTION_CONTINUE_EXECUTION;
