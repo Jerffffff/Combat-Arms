@@ -6,6 +6,7 @@
 
 #include "Strings\Strings.h"
 #include "SDK\message.h"
+#include "Breakpoint\Breakpoint.h"
 #include "Memory\Memory.h"
 
 #endif

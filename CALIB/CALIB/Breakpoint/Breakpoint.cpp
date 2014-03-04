@@ -1,0 +1,123 @@
+#include "Breakpoint.h"
+
+extern "C"
+{
+	cBreakpoint::cBreakpoint()
+	{
+		thread = NULL;
+		dwAddress1 = dwAddress2 = dwAddress3 = dwAddress4 = NULL;
+		hwBP = NULL;
+	}
+
+	void cBreakpoint::GetMainThreadFromCurrentProcess()
+	{
+		unsigned long uProcessId = GetCurrentProcessId();
+		HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, uProcessId);
+
+		if (!hSnapshot)
+			return;
+
+		THREADENTRY32 lpThread;
+
+		lpThread.dwSize = sizeof(THREADENTRY32);
+
+		if (Thread32First(hSnapshot, &lpThread))
+		{
+			do
+			{
+				if (lpThread.th32OwnerProcessID == uProcessId)
+					break;
+			} while (Thread32Next(hSnapshot, &lpThread));
+
+			CloseHandle(hSnapshot);
+			thread = OpenThread(THREAD_GET_CONTEXT | THREAD_SET_CONTEXT | THREAD_SUSPEND_RESUME, 1, lpThread.th32ThreadID);
+		}
+	}
+
+	void cBreakpoint::SetBreakPoint1(DWORD dwAddress)
+	{
+		dwAddress1 = dwAddress;
+	}
+
+	void cBreakpoint::SetBreakPoint2(DWORD dwAddress)
+	{
+		dwAddress2 = dwAddress;
+	}
+
+	void cBreakpoint::SetBreakPoint3(DWORD dwAddress)
+	{
+		dwAddress3 = dwAddress;
+	}
+
+	void cBreakpoint::SetBreakPoint4(DWORD dwAddress)
+	{
+		dwAddress4 = dwAddress;
+	}
+
+	void cBreakpoint::UnsetBreakPoints()
+	{
+		SuspendThread(thread);
+		thread_context.ContextFlags = CONTEXT_DEBUG_REGISTERS;
+		thread_context.Dr0 = NULL;
+		thread_context.Dr1 = NULL;
+		thread_context.Dr2 = NULL;
+		thread_context.Dr3 = NULL;
+		thread_context.Dr7 = NULL;
+		SetThreadContext(thread, &thread_context);
+		ResumeThread(thread);
+		CloseHandle(thread);
+		thread = NULL;
+		RemoveVectoredExceptionHandler(hwBP);
+	}
+
+	void cBreakpoint::SetBreakPoints(HANDLE hThread)
+	{
+		hThread != NULL ? thread = hThread : GetMainThreadFromCurrentProcess();
+		SuspendThread(thread);
+		hwBP = AddVectoredExceptionHandler(rand() % 10000, ExceptionFilter);
+
+		thread_context.ContextFlags = CONTEXT_DEBUG_REGISTERS;
+		thread_context.Dr0 = dwAddress1;
+		thread_context.Dr1 = dwAddress2;
+		thread_context.Dr2 = dwAddress3;
+		thread_context.Dr3 = dwAddress4;
+		thread_context.Dr7 = dwAddress4 != NULL ? (1 << 0) | (1 << 2) | (1 << 4) | (1 << 6) :
+			dwAddress3 != NULL ? (1 << 0) | (1 << 2) | (1 << 4) :
+			dwAddress2 != NULL ? (1 << 0) | (1 << 2) :
+			dwAddress1 != NULL ? (1 << 0) : NULL;
+		SetThreadContext(thread, &thread_context);
+		ResumeThread(thread);
+	}
+
+	LONG WINAPI cBreakpoint::ExceptionFilter(EXCEPTION_POINTERS* ExceptionInfo)
+	{
+		if (ExceptionInfo->ExceptionRecord->ExceptionCode == EXCEPTION_SINGLE_STEP)
+		{
+			if (dwAddress1 != NULL && (DWORD)ExceptionInfo->ExceptionRecord->ExceptionAddress == dwAddress1)
+			{
+				ExceptionInfo->ContextRecord->Eip = dwEIP1;
+				return EXCEPTION_CONTINUE_EXECUTION;
+			}
+
+			if (dwAddress2 != NULL && (DWORD)ExceptionInfo->ExceptionRecord->ExceptionAddress == dwAddress2)
+			{
+				ExceptionInfo->ContextRecord->Eip = dwEIP2;
+				return EXCEPTION_CONTINUE_EXECUTION;
+			}
+
+			if (dwAddress3 != NULL && (DWORD)ExceptionInfo->ExceptionRecord->ExceptionAddress == dwAddress3)
+			{
+				ExceptionInfo->ContextRecord->Eip = dwEIP3;
+				return EXCEPTION_CONTINUE_EXECUTION;
+			}
+
+			if (dwAddress4 != NULL && (DWORD)ExceptionInfo->ExceptionRecord->ExceptionAddress == dwAddress4)
+			{
+				ExceptionInfo->ContextRecord->Eip = dwEIP4;
+				return EXCEPTION_CONTINUE_EXECUTION;
+			}
+		}
+
+		return EXCEPTION_CONTINUE_SEARCH;
+	}
+}

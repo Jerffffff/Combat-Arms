@@ -9,6 +9,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Breakpoint">
+      <UniqueIdentifier>{2674ae3c-43e7-486a-aab7-4a457a598475}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CALIB.h" />
@@ -18,6 +21,9 @@
     <ClInclude Include="Memory\Memory.h">
       <Filter>Memory</Filter>
     </ClInclude>
+    <ClInclude Include="Breakpoint\Breakpoint.h">
+      <Filter>Breakpoint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Strings\Strings.cpp">
@@ -25,6 +31,9 @@
     </ClCompile>
     <ClCompile Include="Memory\Memory.cpp">
       <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Breakpoint\Breakpoint.cpp">
+      <Filter>Breakpoint</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
