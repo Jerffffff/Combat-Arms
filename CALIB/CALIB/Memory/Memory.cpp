@@ -16,12 +16,13 @@ extern "C"
 		GetModuleInformation(GetCurrentProcess(), GetModuleHandle(Strings->MODULE_ENGINE), &MODULE_ENGINE, sizeof(MODULEINFO));
 		GetModuleInformation(GetCurrentProcess(), GetModuleHandle(Strings->MODULE_CLIENTFX), &MODULE_CLIENTFX, sizeof(MODULEINFO));
 
-		ADDRESS_GAMESTATUS = scan((DWORD)MODULE_CSHELL.EntryPoint, MODULE_CSHELL.SizeOfImage, (PBYTE)"\x8B\x0D\x00\x00\x00\x00\x83\x79\x04\x00\x74", Strings->MASK_GAMESTATUS);
+		ADDRESS_GAMESTATUS = scan((DWORD)MODULE_CSHELL.lpBaseOfDll, MODULE_CSHELL.SizeOfImage, (PBYTE)"\x8B\x0D\x00\x00\x00\x00\x83\x79\x04\x00\x74", Strings->MASK_GAMESTATUS);
 		ADDRESS_GAMESTATUS = (**(DWORD**)(ADDRESS_GAMESTATUS + 0x2)) - 0x4;
 
-		char* buf = new char[12];
+		char* buf = new char[24];
 		sprintf(buf, "0x%X", ADDRESS_GAMESTATUS);
 		MessageBox(0, buf, 0, 0);
+		delete[] buf;
 	}
 
 	cMemory::~cMemory()
