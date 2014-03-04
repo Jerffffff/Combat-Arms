@@ -11,8 +11,4 @@
 
 #include "SDK\message.h"
 
-#include "Classes\GameClientShell.h"
-#include "Classes\PlayerMgr.h"
-#include "Classes\LTModel.h"
-
 #endif

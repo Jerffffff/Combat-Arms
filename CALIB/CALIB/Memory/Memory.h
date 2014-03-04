@@ -7,6 +7,10 @@
 #include <Windows.h>
 #include <Psapi.h>
 
+#include "../Classes\GameClientShell.h"
+#include "../Classes\PlayerMgr.h"
+#include "../Classes\LTModel.h"
+
 class cMemory
 {
 private:
@@ -16,6 +20,10 @@ public:
 	DWORD ADDRESS_GAMESTATUS, ADDRESS_LTCLIENT, ADDRESS_GAMECLIENTSHELL, ADDRESS_WEAPONMGR, ADDRESS_FIREWEAPON, ADDRESS_AMMO, ADDRESS_GETPLAYERBYINDEX, 
 		ADDRESS_GETLOCALPLAYER, ADDRESS_CLIENTINFOMGR, ADDRESS_LTCOMMON, ADDRESS_DRAWPRIM, ADDRESS_SENDTOSERVER, ADDRESS_SUPERBULLETS, ADDRESS_GETFONTHANDLE,
 		ADDRESS_GRAVITY, ADDRESS_JUMPVEL, ADDRESS_PICKUPDISTANCE, ADDRESS_ESP1, ADDRESS_ESP2;
+
+	cWeaponMgr* WeaponMgr;
+	cGameClientShell* GameClientShell;
+	cPlayerMgr* PlayerMgr;
 
 	cMemory();
 	~cMemory();
