@@ -5,6 +5,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "Strings\Strings.h"
+#include "SDK\message.h"
 #include "Memory\Memory.h"
 
 #endif
