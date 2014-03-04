@@ -9,6 +9,7 @@ extern "C"
 	{
 		thread = NULL;
 		dwAddress1 = dwAddress2 = dwAddress3 = dwAddress4 = NULL;
+		dwEIP1 = dwEIP2 = dwEIP3 = dwEIP4 = NULL;
 		hwBP = NULL;
 	}
 

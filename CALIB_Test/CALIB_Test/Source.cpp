@@ -20,6 +20,8 @@ DWORD _stdcall dwStart(LPVOID)
 	dwAmmoJMP = Memory->ADDRESS_AMMO + 0xB;
 	Breakpoint->SetBreakPoint1(Memory->ADDRESS_AMMO, DWORD(&vAmmo));
 
+	Breakpoint->SetBreakPoints();
+
 	return NULL;
 }
 
