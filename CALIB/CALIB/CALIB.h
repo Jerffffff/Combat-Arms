@@ -8,6 +8,4 @@
 #include "Memory\Memory.h"
 
 
-asdmkasmdamdsfsjdf
-
 #endif
