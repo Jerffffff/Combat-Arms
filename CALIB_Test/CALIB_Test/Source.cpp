@@ -53,7 +53,7 @@ HRESULT WINAPI myDIP(LPDIRECT3DDEVICE9 pDevice, D3DPRIMITIVETYPE Type, int BaseV
 
 HRESULT WINAPI myEndscene(LPDIRECT3DDEVICE9 pDevice)
 {
-	Directx->RenderString(5, 5, 0xFFFF0000, "amz test");
+	pDevice->GetViewport(&Directx->viewport);
 
 	return Directx->pEndscene(pDevice);
 }
@@ -67,7 +67,13 @@ DWORD _stdcall dwBreakpoint1Thread(LPVOID)
 		Sleep(250);
 
 	Memory = new cMemory();
-	Directx = new cDirectx(PBYTE(NULL), PBYTE(NULL), PBYTE(NULL));
+	Directx = new cDirectx();
+	Directx->HookEndscene(PBYTE(&myEndscene));
+
+	Log->log("ADDRESS_GETFONTHANDLE: 0x%X", Memory->ADDRESS_GETFONTHANDLE);
+	Log->log("ADDRESS_BUILDFONT: 0x%X", Memory->ADDRESS_BUILDFONT);
+	Log->log("ADDRESS_FILLFONT: 0x%X", Memory->ADDRESS_FILLFONT);
+	Log->log("ADDRESS_FONTECX: 0x%X", Memory->ADDRESS_FONTECX);
 
 	Breakpoint1 = new cBreakpoint();
 

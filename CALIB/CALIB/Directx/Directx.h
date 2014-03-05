@@ -15,11 +15,18 @@ public:
 	DWORD dwEndScene, dwReset, dwDIP;
 	cDirectx();
 
+	LPDIRECT3DDEVICE9 pDevice, g_pDevice;
+
+	D3DVIEWPORT9 viewport;
+
 	void HookEndscene(PBYTE es);
 	void HookDIP(PBYTE dip);
 	void HookReset(PBYTE rs);
 
 	void RenderString(int x, int y, DWORD color, char* text);
+
+	HRESULT GenerateTexture(IDirect3DDevice9 *pD3Ddev, IDirect3DTexture9 **ppD3Dtex, DWORD colour32);
+	void DrawCrosshair(int size, D3DCOLOR xcolor);
 
 	typedef HRESULT(WINAPI* tEndscene) (LPDIRECT3DDEVICE9);
 	tEndscene pEndscene;

@@ -8,7 +8,7 @@ extern "C"
 
 	cDirectx::cDirectx()
 	{
-		Font = new cFont();
+		//Font = new cFont();
 
 		MODULEINFO mInfo;
 		DWORD dwD3D9 = NULL;
@@ -64,5 +64,35 @@ extern "C"
 	void cDirectx::RenderString(int x, int y, DWORD color, char* text)
 	{
 		Font->RenderString(x, y, color, text);
+	}
+
+	void cDirectx::DrawCrosshair(int size, D3DCOLOR xcolor)
+	{
+		D3DRECT rec2 = { (viewport.Width-1) - size, (viewport.Height-1), (viewport.Width-1) + size, (viewport.Height-1) + 1 };
+		D3DRECT rec3 = { (viewport.Width-1), (viewport.Height-1) - size, (viewport.Width-1) + 1, (viewport.Height-1) + size };
+		pDevice->Clear(1, &rec2, D3DCLEAR_TARGET, xcolor, 1000, 0);
+		pDevice->Clear(1, &rec3, D3DCLEAR_TARGET, xcolor, 100, 0);
+	}
+
+	HRESULT cDirectx::GenerateTexture(IDirect3DDevice9 *pD3Ddev, IDirect3DTexture9 **ppD3Dtex, DWORD colour32)
+	{
+		if (FAILED(pD3Ddev->CreateTexture(8, 8, 1, 0, D3DFMT_A4R4G4B4, D3DPOOL_MANAGED, ppD3Dtex, NULL)))
+			return E_FAIL;
+
+		WORD colour16 = ((WORD)((colour32 >> 28) & 0xF) << 12)
+			| (WORD)(((colour32 >> 20) & 0xF) << 8)
+			| (WORD)(((colour32 >> 12) & 0xF) << 4)
+			| (WORD)(((colour32 >> 4) & 0xF) << 0);
+
+		D3DLOCKED_RECT d3dlr;
+		(*ppD3Dtex)->LockRect(0, &d3dlr, 0, 0);
+		WORD *pDst16 = (WORD*)d3dlr.pBits;
+
+		for (int xy = 0; xy < 8 * 8; xy++)
+			*pDst16++ = colour16;
+
+		(*ppD3Dtex)->UnlockRect(0);
+
+		return S_OK;
 	}
 }
