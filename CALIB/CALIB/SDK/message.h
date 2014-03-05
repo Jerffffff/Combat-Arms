@@ -90,9 +90,9 @@ public:
 	inline void WriteYRotation(const LTRotation &cRotation) { m_pMsg->WriteYRotation(cRotation); }
 	inline void WriteDatabaseRecord( IDatabaseMgr *pDatabase, HRECORD hRecord ) { m_pMsg->WriteDatabaseRecord( pDatabase, hRecord ); }
 	inline void Writebool(bool bValue) { WriteBits(bValue ? 1 : 0, 1); }
-	inline void Writeuint8(uint8 nValue) { WriteBits(nValue, 8); }
-	inline void Writeuint16(uint16 nValue) { WriteBits(nValue, 16); }
-	inline void Writeuint32(uint32 nValue) { WriteBits(nValue, 32); }
+	inline void Writeuint8(uint8 nValue) { WriteBits(nValue, 8); }    //0x6C
+	inline void Writeuint16(uint16 nValue) { WriteBits(nValue, 16); } //0x70
+	inline void Writeuint32(uint32 nValue) { WriteBits(nValue, 32); } //0x74
 	inline void Writeuint64(uint64 nValue) { WriteBits64(nValue, 64); }
 	inline void Writeint8(int8 nValue) { WriteBits((uint32)nValue, 8); }
 	inline void Writeint16(int16 nValue) { WriteBits((uint32)nValue, 16); }

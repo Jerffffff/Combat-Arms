@@ -15,6 +15,7 @@
 class cMemory
 {
 private:
+	const wchar_t* pchar2pwchar(const char* indata);
 public:
 	MODULEINFO MODULE_D3D9, MODULE_CSHELL, MODULE_ENGINE, MODULE_CLIENTFX;
 
@@ -24,9 +25,8 @@ public:
 
 	typedef unsigned int(__stdcall *tSendToServer)(ILTMessage_Read* pMsg, unsigned int Flags);
 	tSendToServer SendToServer;
-	CAutoMessage pMsg;
 
-	void GetUnicodeBytesFromChar(char curChar, BYTE *bOut);
+	void Respawn();
 	void ChatMessage(char *title, char *message);
 
 	cWeaponMgr* WeaponMgr;
