@@ -19,6 +19,7 @@
     <ClInclude Include="Classes\SFXMgr.h" />
     <ClInclude Include="Classes\Structs.h" />
     <ClInclude Include="Classes\WeaponMgr.h" />
+    <ClInclude Include="Detours\Detours.h" />
     <ClInclude Include="Directx\Directx.h" />
     <ClInclude Include="Directx\Font\Font.h" />
     <ClInclude Include="Log\Log.h" />
@@ -32,6 +33,9 @@
     <ClCompile Include="Log\Log.cpp" />
     <ClCompile Include="Memory\Memory.cpp" />
     <ClCompile Include="Strings\Strings.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Detours\Detours.lib" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A93CA762-8D83-408A-9265-7985FE6AC703}</ProjectGuid>

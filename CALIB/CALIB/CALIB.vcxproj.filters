@@ -24,6 +24,9 @@
     <Filter Include="Directx\Font">
       <UniqueIdentifier>{5dbb2d0e-c068-413d-8a35-488460581a18}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Detours">
+      <UniqueIdentifier>{fa3981b6-bec1-4537-8811-a9ee60f56f9e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CALIB.h" />
@@ -63,6 +66,9 @@
     <ClInclude Include="Directx\Font\Font.h">
       <Filter>Directx\Font</Filter>
     </ClInclude>
+    <ClInclude Include="Detours\Detours.h">
+      <Filter>Detours</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Strings\Strings.cpp">
@@ -83,5 +89,10 @@
     <ClCompile Include="Directx\Font\Font.cpp">
       <Filter>Directx\Font</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Detours\Detours.lib">
+      <Filter>Detours</Filter>
+    </Library>
   </ItemGroup>
 </Project>

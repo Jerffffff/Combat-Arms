@@ -45,6 +45,17 @@ __declspec(naked) void __stdcall vESP()
 	__asm JMP dwESPJMP;
 }
 
+HRESULT WINAPI myDIP(LPDIRECT3DDEVICE9 pDevice, D3DPRIMITIVETYPE Type, int BaseVertexIndex, UINT MinIndex, UINT NumVerts, UINT StartIndex, UINT PrimCount)
+{
+
+	return Directx->pDIP(pDevice, Type, BaseVertexIndex, MinIndex, NumVerts, StartIndex, PrimCount);
+}
+
+HRESULT WINAPI myEndscene(LPDIRECT3DDEVICE9 pDevice)
+{
+	return Directx->pEndscene(pDevice);
+}
+
 bool bSuperJump = false;
 bool bHover = false;
 bool bFly = false, bbFly = false;
@@ -54,6 +65,7 @@ DWORD _stdcall dwBreakpoint1Thread(LPVOID)
 		Sleep(250);
 
 	Memory = new cMemory();
+	Directx = new cDirectx(PBYTE(&myEndscene), NULL, NULL);
 
 	Breakpoint1 = new cBreakpoint();
 

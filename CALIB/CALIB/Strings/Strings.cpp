@@ -12,6 +12,8 @@ extern "C"
 		szAssign = new char[3];
 		sprintf(szAssign, /*%s*/XorStr<0x5F, 3, 0x01717FF1>("\x7A\x13" + 0x01717FF1).s, /*%s*/XorStr<0x5F, 3, 0x01717FF1>("\x7A\x13" + 0x01717FF1).s);
 
+		Assign(&OS_NOT_SUPPORTED, /*Your Operating System isn't supported!*/XorStr<0xBA, 39, 0x2CCAE605>("\xE3\xD4\xC9\xCF\x9E\xF0\xB0\xA4\xB0\xA2\xB0\xAC\xA8\xA0\xE8\x9A\xB3\xB8\xB8\xA8\xA3\xEF\xB9\xA2\xBC\xF4\xA0\xF5\xA5\xA2\xA8\xA9\xB5\xA9\xA8\xB8\xBA\xFE" + 0x2CCAE605).s);
+
 		Assign(&MODULE_D3D9, /*d3d9.dll*/XorStr<0x1E, 9, 0x74802921>("\x7A\x2C\x44\x18\x0C\x47\x48\x49" + 0x74802921).s);
 		Assign(&MODULE_CSHELL, /*CShell.dll*/XorStr<0xAB, 11, 0x936CB208>("\xE8\xFF\xC5\xCB\xC3\xDC\x9F\xD6\xDF\xD8" + 0x936CB208).s);
 		Assign(&MODULE_ENGINE, /*Engine.exe*/XorStr<0x0A, 11, 0x06EF1C82>("\x4F\x65\x6B\x64\x60\x6A\x3E\x74\x6A\x76" + 0x06EF1C82).s);
