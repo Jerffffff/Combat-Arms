@@ -25,6 +25,8 @@ extern "C"
 
 		ADDRESS_LTCLIENT = Scan(&MODULE_CSHELL, PBYTE("\x8B\x0D\x00\x00\x00\x00\x8B\x01\x8B\x50\x70"), Strings->MASK_LTCLIENT);
 		ADDRESS_LTCLIENT = *(DWORD*)(ADDRESS_LTCLIENT + 2);
+		LTClient = *(CLTClient**)ADDRESS_LTCLIENT;
+		CommonLT = LTClient->Common();
 
 		ADDRESS_GAMECLIENTSHELL = Scan(&MODULE_CSHELL, (PBYTE)"\x8B\x0D\x00\x00\x00\x00\x8B\x01\x8B\x90\x00\x00\x00\x00\xFF\xD2\x8B\x10", Strings->MASK_GAMECLIENTSHELL);
 		ADDRESS_GAMECLIENTSHELL = *(DWORD*)(ADDRESS_GAMECLIENTSHELL + 2);
@@ -74,10 +76,157 @@ extern "C"
 		*/
 
 		ADDRESS_SENDTOSERVER = Scan(&MODULE_ENGINE, (PBYTE)"\x6A\xFF\x68\x00\x00\x00\x00\x64\xA1\x00\x00\x00\x00\x50\x83\xEC\x2C", Strings->MASK_SENDTOSERVER);
+		SendToServer = (tSendToServer)ADDRESS_SENDTOSERVER;
 
 		///////fix
 		//ADDRESS_DRAWPRIM = Scan(&MODULE_ENGINE, (PBYTE)"\x8B\x50\x00\x8B\x12\x56\x8B\x70\x00\x89\xC\x96\x8B\x48\x00\xFF\x1\x5E\x8B\x40\x00\xFF\x0\xC3\x8B\xC1\xC3\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xC3\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xA1\x00\x00\x00\x00\xC3\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xA1\x00\x00\x00\x00\xC3\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xA1\x00\x00\x00\x00\xC3\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xA1\x00\x00\x00\x00\xC3\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xA1\x00\x00\x00\x00\xC3\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xA1\x00\x00\x00\x00\xC3\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xCC\xA1\x00", "xx?xxxxx?xxxxx?xxxxx?xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx????xxxxxxxxxxxx????xxxxxxxxxxxx????xxxxxxxxxxxx????xxxxxxxxxxxx????xxxxxxxxxxxx????xxxxxxxxxxxx");
 		//ADDRESS_DRAWPRIM = *(DWORD*)(ADDRESS_DRAWPRIM + 0x99);
+	}
+
+	void cMemory::GetUnicodeBytesFromChar(char curChar, BYTE *bOut)
+	{
+		if (!bOut) return;
+
+		switch (curChar)
+		{
+		case ' ': bOut[0] = 0x80; bOut[1] = 0x00; break;
+		case '0': bOut[0] = 0xC0; bOut[1] = 0x00; break;
+		case '1': bOut[0] = 0xC4; bOut[1] = 0x00; break;
+		case '2': bOut[0] = 0xC8; bOut[1] = 0x00; break;
+		case '3': bOut[0] = 0xCC; bOut[1] = 0x00; break;
+		case '4': bOut[0] = 0xD0; bOut[1] = 0x00; break;
+		case '5': bOut[0] = 0xD4; bOut[1] = 0x00; break;
+		case '6': bOut[0] = 0xD8; bOut[1] = 0x00; break;
+		case '7': bOut[0] = 0xDC; bOut[1] = 0x00; break;
+		case '8': bOut[0] = 0xE0; bOut[1] = 0x00; break;
+		case '9': bOut[0] = 0xE4; bOut[1] = 0x00; break;
+
+		case 'A': bOut[0] = 0x04; bOut[1] = 0x01; break;
+		case 'B': bOut[0] = 0x08; bOut[1] = 0x01; break;
+		case 'C': bOut[0] = 0x0C; bOut[1] = 0x01; break;
+		case 'D': bOut[0] = 0x10; bOut[1] = 0x01; break;
+		case 'E': bOut[0] = 0x14; bOut[1] = 0x01; break;
+		case 'F': bOut[0] = 0x18; bOut[1] = 0x01; break;
+		case 'G': bOut[0] = 0x1C; bOut[1] = 0x01; break;
+		case 'H': bOut[0] = 0x20; bOut[1] = 0x01; break;
+		case 'I': bOut[0] = 0x24; bOut[1] = 0x01; break;
+		case 'J': bOut[0] = 0x28; bOut[1] = 0x01; break;
+		case 'K': bOut[0] = 0x2C; bOut[1] = 0x01; break;
+		case 'L': bOut[0] = 0x30; bOut[1] = 0x01; break;
+		case 'M': bOut[0] = 0x34; bOut[1] = 0x01; break;
+		case 'N': bOut[0] = 0x38; bOut[1] = 0x01; break;
+		case 'O': bOut[0] = 0x3C; bOut[1] = 0x01; break;
+		case 'P': bOut[0] = 0x40; bOut[1] = 0x01; break;
+		case 'Q': bOut[0] = 0x44; bOut[1] = 0x01; break;
+		case 'R': bOut[0] = 0x48; bOut[1] = 0x01; break;
+		case 'S': bOut[0] = 0x4C; bOut[1] = 0x01; break;
+		case 'T': bOut[0] = 0x50; bOut[1] = 0x01; break;
+		case 'U': bOut[0] = 0x54; bOut[1] = 0x01; break;
+		case 'V': bOut[0] = 0x58; bOut[1] = 0x01; break;
+		case 'W': bOut[0] = 0x5C; bOut[1] = 0x01; break;
+		case 'X': bOut[0] = 0x60; bOut[1] = 0x01; break;
+		case 'Y': bOut[0] = 0x64; bOut[1] = 0x01; break;
+		case 'Z': bOut[0] = 0x68; bOut[1] = 0x01; break;
+
+		case 'a': bOut[0] = 0x84; bOut[1] = 0x01; break;
+		case 'b': bOut[0] = 0x88; bOut[1] = 0x01; break;
+		case 'c': bOut[0] = 0x8C; bOut[1] = 0x01; break;
+		case 'd': bOut[0] = 0x90; bOut[1] = 0x01; break;
+		case 'e': bOut[0] = 0x94; bOut[1] = 0x01; break;
+		case 'f': bOut[0] = 0x98; bOut[1] = 0x01; break;
+		case 'g': bOut[0] = 0x9C; bOut[1] = 0x01; break;
+		case 'h': bOut[0] = 0xA0; bOut[1] = 0x01; break;
+		case 'i': bOut[0] = 0xA4; bOut[1] = 0x01; break;
+		case 'j': bOut[0] = 0xA8; bOut[1] = 0x01; break;
+		case 'k': bOut[0] = 0xAC; bOut[1] = 0x01; break;
+		case 'l': bOut[0] = 0xB0; bOut[1] = 0x01; break;
+		case 'm': bOut[0] = 0xB4; bOut[1] = 0x01; break;
+		case 'n': bOut[0] = 0xB8; bOut[1] = 0x01; break;
+		case 'o': bOut[0] = 0xBC; bOut[1] = 0x01; break;
+		case 'p': bOut[0] = 0xC0; bOut[1] = 0x01; break;
+		case 'q': bOut[0] = 0xC4; bOut[1] = 0x01; break;
+		case 'r': bOut[0] = 0xC8; bOut[1] = 0x01; break;
+		case 's': bOut[0] = 0xCC; bOut[1] = 0x01; break;
+		case 't': bOut[0] = 0xD0; bOut[1] = 0x01; break;
+		case 'u': bOut[0] = 0xD4; bOut[1] = 0x01; break;
+		case 'v': bOut[0] = 0xD8; bOut[1] = 0x01; break;
+		case 'w': bOut[0] = 0xDC; bOut[1] = 0x01; break;
+		case 'x': bOut[0] = 0xE0; bOut[1] = 0x01; break;
+		case 'y': bOut[0] = 0xE4; bOut[1] = 0x01; break;
+		case 'z': bOut[0] = 0xE8; bOut[1] = 0x01; break;
+
+		case '}': bOut[0] = 0xF4; bOut[1] = 0x01; break;
+		case '²': bOut[0] = 0xC8; bOut[1] = 0x02; break;
+		case '³': bOut[0] = 0xCC; bOut[1] = 0x02; break;
+		case '{': bOut[0] = 0xEC; bOut[1] = 0x01; break;
+		case '[': bOut[0] = 0x6C; bOut[1] = 0x01; break;
+		case ']': bOut[0] = 0x74; bOut[1] = 0x01; break;
+		case '~': bOut[0] = 0xF8; bOut[1] = 0x01; break;
+		case '\\': bOut[0] = 0x70; bOut[1] = 0x01; break;
+		case '|': bOut[0] = 0xF0; bOut[1] = 0x01; break;
+		case 'µ': bOut[0] = 0xD4; bOut[1] = 0x02; break;
+		case '@': bOut[0] = 0x00; bOut[1] = 0x01; break;
+		case '€': bOut[0] = 0x00; bOut[1] = 0x02; break;
+		case '=': bOut[0] = 0xF4; bOut[1] = 0x00; break;
+		case '!': bOut[0] = 0x84; bOut[1] = 0x00; break;
+		case '"': bOut[0] = 0x88; bOut[1] = 0x00; break;
+		case '§': bOut[0] = 0x9C; bOut[1] = 0x02; break;
+		case '$': bOut[0] = 0x90; bOut[1] = 0x00; break;
+		case '%': bOut[0] = 0x94; bOut[1] = 0x00; break;
+		case '&': bOut[0] = 0x98; bOut[1] = 0x00; break;
+		case '/': bOut[0] = 0xBC; bOut[1] = 0x00; break;
+		case '(': bOut[0] = 0xA0; bOut[1] = 0x00; break;
+		case ')': bOut[0] = 0xA4; bOut[1] = 0x00; break;
+		case '*': bOut[0] = 0xA8; bOut[1] = 0x00; break;
+		case ';': bOut[0] = 0xEC; bOut[1] = 0x00; break;
+		case '_': bOut[0] = 0x7C; bOut[1] = 0x01; break;
+		case ':': bOut[0] = 0xE8; bOut[1] = 0x00; break;
+		case '\'': bOut[0] = 0x9C; bOut[1] = 0x00; break;
+		case '?': bOut[0] = 0xFC; bOut[1] = 0x00; break;
+		case '°': bOut[0] = 0xC0; bOut[1] = 0x02; break;
+		case '`': bOut[0] = 0x80; bOut[1] = 0x01; break;
+		case '>': bOut[0] = 0xF8; bOut[1] = 0x00; break;
+		case '^': bOut[0] = 0x78; bOut[1] = 0x01; break;
+		case '+': bOut[0] = 0xAC; bOut[1] = 0x00; break;
+		case '-': bOut[0] = 0xB4; bOut[1] = 0x00; break;
+		case ',': bOut[0] = 0xB0; bOut[1] = 0x00; break;
+		case '.': bOut[0] = 0xB8; bOut[1] = 0x00; break;
+		case '#': bOut[0] = 0x8C; bOut[1] = 0x00; break;
+		case 'ß': bOut[0] = 0x7C; bOut[1] = 0x03; break;
+		case '<': bOut[0] = 0xF0; bOut[1] = 0x00; break;
+
+		default: bOut[0] = 0xFC; bOut[1] = 0x00; break;//'?' 
+		}
+	}
+
+	void cMemory::ChatMessage(char *title, char *message)
+	{
+		//LTClient = *(CLTClient**)ADDRESS_LTCLIENT;
+		//CommonLT = LTClient->Common();
+
+		pMsg.Reset();
+		pMsg.Writeuint8(104);
+
+		for (int i = 0; i < (int)strlen(message); i++)
+		{
+			BYTE bChar[2] = { 0 };
+			GetUnicodeBytesFromChar(message[i], bChar);
+			pMsg.Writeuint8((BYTE)bChar[0]);
+			pMsg.Writeuint8((BYTE)bChar[1]);
+		}
+		pMsg.Writeuint16(0);
+
+		for (int i = 0; i < (int)strlen(title); i++)
+		{
+			BYTE bChar[2] = { 0 };
+			GetUnicodeBytesFromChar(title[i], bChar);
+			pMsg.Writeuint8((BYTE)bChar[0]);
+			pMsg.Writeuint8((BYTE)bChar[1]);
+		}
+		pMsg.Writeuint16(0);
+		pMsg.Writeint32(0);
+
+		SendToServer(pMsg.Read(), MESSAGE_GUARANTEED);
 	}
 
 	bool cMemory::Compare(const BYTE* pData, const BYTE* bMask, const char* szMask)

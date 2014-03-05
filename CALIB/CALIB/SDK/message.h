@@ -18,7 +18,7 @@ class ILTMessage_Write;
 class ILTMessage_Read;
 
 
-extern CCommonLT* g_CommonLT; // Defined in CommonUtilities.h
+extern CCommonLT* CommonLT; // Defined in CommonUtilities.h
 
 
 
@@ -114,7 +114,7 @@ private:
 		Term();
 		m_pMsg = NULL;
 		ILTMessage_Write *pMsg;
-		LTRESULT nResult = g_CommonLT->CreateMessage(pMsg);
+		LTRESULT nResult = CommonLT->CreateMessage(pMsg);
 		if (nResult == LT_OK)
 			m_pMsg = pMsg;
 		ASSERT(nResult == LT_OK);

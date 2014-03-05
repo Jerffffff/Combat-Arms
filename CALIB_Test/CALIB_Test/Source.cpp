@@ -70,13 +70,10 @@ DWORD _stdcall dwBreakpoint1Thread(LPVOID)
 		Sleep(250);
 
 	Memory = new cMemory();
+	Log->log("pPlayerMgr: 0x%X", Memory->PlayerMgr);
+
 	Directx = new cDirectx();
 	Directx->HookEndscene(PBYTE(&myEndscene));
-
-	Log->log("ADDRESS_GETFONTHANDLE: 0x%X", Memory->ADDRESS_GETFONTHANDLE);
-	Log->log("ADDRESS_BUILDFONT: 0x%X", Memory->ADDRESS_BUILDFONT);
-	Log->log("ADDRESS_FILLFONT: 0x%X", Memory->ADDRESS_FILLFONT);
-	Log->log("ADDRESS_FONTECX: 0x%X", Memory->ADDRESS_FONTECX);
 
 	Breakpoint1 = new cBreakpoint();
 
@@ -133,6 +130,9 @@ DWORD _stdcall dwBreakpoint1Thread(LPVOID)
 	while (1)
 	{
 		*(float*)Memory->ADDRESS_PICKUPDISTANCE = 999999999.0f;
+
+		if (GetAsyncKeyState(VK_NUMPAD9) & 1)
+			Memory->PlayerMgr->Status == 1 ? Memory->PlayerMgr->Status = 4 : Memory->PlayerMgr->Status == 4 ? Memory->PlayerMgr->Status = 1 : Memory->PlayerMgr->Status = Memory->PlayerMgr->Status;
 
 		if (GetAsyncKeyState(VK_LBUTTON) < 0)
 			Memory->PlayerMgr->FireCurrentWeapon();
@@ -194,8 +194,9 @@ bool _stdcall DllMain(HMODULE hDll, DWORD dwReason, LPVOID lpReserved)
 {
 	if (dwReason == DLL_PROCESS_ATTACH)
 	{
+		MessageBox(0, 0, 0, 0);
 		Strings = new cStrings();
-		Log = new cLog("C:\\log.txt");
+		Log = new cLog("C:\\log.txt", true);
 		CreateThread(0, 0, dwBreakpoint1Thread, 0, 0, 0);
 	}
 

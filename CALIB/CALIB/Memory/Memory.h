@@ -10,6 +10,7 @@
 #include "../Classes\GameClientShell.h"
 #include "../Classes\PlayerMgr.h"
 #include "../Classes\LTModel.h"
+#include "../SDK/message.h"
 
 class cMemory
 {
@@ -21,7 +22,15 @@ public:
 		ADDRESS_GETLOCALPLAYER, ADDRESS_CLIENTINFOMGR, ADDRESS_LTCOMMON, ADDRESS_DRAWPRIM, ADDRESS_SENDTOSERVER, ADDRESS_SUPERBULLETS, ADDRESS_GETFONTHANDLE,
 		ADDRESS_BUILDFONT, ADDRESS_FILLFONT, ADDRESS_FONTECX, ADDRESS_GRAVITY, ADDRESS_JUMPVEL, ADDRESS_PICKUPDISTANCE, ADDRESS_ESP1, ADDRESS_ESP2;
 
+	typedef unsigned int(__stdcall *tSendToServer)(ILTMessage_Read* pMsg, unsigned int Flags);
+	tSendToServer SendToServer;
+	CAutoMessage pMsg;
+
+	void GetUnicodeBytesFromChar(char curChar, BYTE *bOut);
+	void ChatMessage(char *title, char *message);
+
 	cWeaponMgr* WeaponMgr;
+	CLTClient* LTClient;
 	cGameClientShell* GameClientShell;
 	cPlayerMgr* PlayerMgr;
 
