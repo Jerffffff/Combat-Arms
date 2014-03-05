@@ -65,7 +65,7 @@ DWORD _stdcall dwBreakpoint1Thread(LPVOID)
 		Sleep(250);
 
 	Memory = new cMemory();
-	Directx = new cDirectx(PBYTE(&myEndscene), NULL, NULL);
+	Directx = new cDirectx(PBYTE(&myEndscene), PBYTE(NULL), PBYTE(NULL));
 
 	Breakpoint1 = new cBreakpoint();
 
