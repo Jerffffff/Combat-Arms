@@ -27,6 +27,12 @@
     <Filter Include="Detours">
       <UniqueIdentifier>{fa3981b6-bec1-4537-8811-a9ee60f56f9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HWID">
+      <UniqueIdentifier>{9e383154-38b5-422b-a7c8-f711e66af6c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Menu">
+      <UniqueIdentifier>{c3a48b58-3c65-4a17-9991-2a3e67e55ea7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CALIB.h" />
@@ -69,6 +75,12 @@
     <ClInclude Include="Detours\Detours.h">
       <Filter>Detours</Filter>
     </ClInclude>
+    <ClInclude Include="HWID\HWID.h">
+      <Filter>HWID</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu\Menu.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Strings\Strings.cpp">
@@ -88,6 +100,12 @@
     </ClCompile>
     <ClCompile Include="Directx\Font\Font.cpp">
       <Filter>Directx\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="HWID\HWID.cpp">
+      <Filter>HWID</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu\Menu.cpp">
+      <Filter>Menu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -9,5 +9,6 @@
 #include "Memory\Memory.h"
 #include "Log\Log.h"
 #include "Directx\Directx.h"
+#include "HWID\HWID.h"
 
 #endif

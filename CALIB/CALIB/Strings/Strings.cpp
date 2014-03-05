@@ -12,6 +12,8 @@ extern "C"
 		szAssign = new char[3];
 		sprintf(szAssign, /*%s*/XorStr<0x5F, 3, 0x01717FF1>("\x7A\x13" + 0x01717FF1).s, /*%s*/XorStr<0x5F, 3, 0x01717FF1>("\x7A\x13" + 0x01717FF1).s);
 
+		Assign(&FONT_NAME, /*Tahoma*/XorStr<0x79, 7, 0x12FCC3BA>("\x2D\x1B\x13\x13\x10\x1F" + 0x12FCC3BA).s);
+
 		Assign(&OS_NOT_SUPPORTED, /*Your Operating System isn't supported!*/XorStr<0xBA, 39, 0x2CCAE605>("\xE3\xD4\xC9\xCF\x9E\xF0\xB0\xA4\xB0\xA2\xB0\xAC\xA8\xA0\xE8\x9A\xB3\xB8\xB8\xA8\xA3\xEF\xB9\xA2\xBC\xF4\xA0\xF5\xA5\xA2\xA8\xA9\xB5\xA9\xA8\xB8\xBA\xFE" + 0x2CCAE605).s);
 
 		Assign(&MODULE_D3D9, /*d3d9.dll*/XorStr<0x1E, 9, 0x74802921>("\x7A\x2C\x44\x18\x0C\x47\x48\x49" + 0x74802921).s);
@@ -39,6 +41,10 @@ extern "C"
 		Assign(&MASK_JUMPVEL, /*xx????xx????xxxx*/XorStr<0x68, 17, 0x6FCADB2B>("\x10\x11\x55\x54\x53\x52\x16\x17\x4F\x4E\x4D\x4C\x0C\x0D\x0E\x0F" + 0x6FCADB2B).s);
 		Assign(&MASK_PICKUPDISTANCE, /*xx????xxxxxxxxxxxx*/XorStr<0x6E, 19, 0xF8DA0F59>("\x16\x17\x4F\x4E\x4D\x4C\x0C\x0D\x0E\x0F\x00\x01\x02\x03\x04\x05\x06\x07" + 0xF8DA0F59).s);
 		Assign(&MASK_ESP, /*xxx*/XorStr<0x8A, 4, 0xC1978229>("\xF2\xF3\xF4" + 0xC1978229).s);
+
+		Assign(&MENU_VISUAL, /*Visual*/XorStr<0x97, 7, 0x1F01DF8D>("\xC1\xF1\xEA\xEF\xFA\xF0" + 0x1F01DF8D).s);
+
+		Assign(&ITEM_CHAMS, /*Chams*/XorStr<0xFB, 6, 0xDB512619>("\xB8\x94\x9C\x93\x8C" + 0xDB512619).s);
 	}
 
 	/*

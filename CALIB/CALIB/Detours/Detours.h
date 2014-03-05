@@ -12,6 +12,9 @@
 #ifndef _DETOURS_H_
 #define _DETOURS_H_
 
+#define WIN32_LEAN_AND_MEAN
+#define _CRT_SECURE_NO_WARNINGS
+
 #pragma comment(lib, "Detours.lib")
 
 //////////////////////////////////////////////////////////////////////////////
