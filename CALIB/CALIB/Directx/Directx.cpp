@@ -6,7 +6,7 @@ extern "C"
 {
 	cDirectx* Directx;
 
-	cDirectx::cDirectx(PBYTE pbEndscene, PBYTE pbReset, PBYTE pbDIP)
+	cDirectx::cDirectx()
 	{
 		Font = new cFont();
 

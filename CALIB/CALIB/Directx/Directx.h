@@ -13,7 +13,7 @@ private:
 
 public:
 	DWORD dwEndScene, dwReset, dwDIP;
-	cDirectx(PBYTE pbEndscene, PBYTE pbReset, PBYTE pbDIP);
+	cDirectx();
 
 	void HookEndscene(PBYTE es);
 	void HookDIP(PBYTE dip);
