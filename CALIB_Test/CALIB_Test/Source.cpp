@@ -53,7 +53,10 @@ HRESULT WINAPI myDIP(LPDIRECT3DDEVICE9 pDevice, D3DPRIMITIVETYPE Type, int BaseV
 
 HRESULT WINAPI myEndscene(LPDIRECT3DDEVICE9 pDevice)
 {
+	Directx->pDevice = pDevice;
 	pDevice->GetViewport(&Directx->viewport);
+
+	Directx->DrawCrosshair(25, 0xFFFF0000);
 
 	return Directx->pEndscene(pDevice);
 }

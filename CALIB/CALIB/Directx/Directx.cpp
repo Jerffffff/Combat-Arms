@@ -68,8 +68,8 @@ extern "C"
 
 	void cDirectx::DrawCrosshair(int size, D3DCOLOR xcolor)
 	{
-		D3DRECT rec2 = { (viewport.Width-1) - size, (viewport.Height-1), (viewport.Width-1) + size, (viewport.Height-1) + 1 };
-		D3DRECT rec3 = { (viewport.Width-1), (viewport.Height-1) - size, (viewport.Width-1) + 1, (viewport.Height-1) + size };
+		D3DRECT rec2 = { (viewport.Width/2) - 1 - size, (viewport.Height/2) - 1, (viewport.Width/2) - 1 + size, (viewport.Height/2) - 1 + 1 };
+		D3DRECT rec3 = { (viewport.Width/2) - 1, (viewport.Height/2) - 1 - size, (viewport.Width/2) - 1 + 1, (viewport.Height/2) - 1 + size };
 		pDevice->Clear(1, &rec2, D3DCLEAR_TARGET, xcolor, 1000, 0);
 		pDevice->Clear(1, &rec3, D3DCLEAR_TARGET, xcolor, 100, 0);
 	}
