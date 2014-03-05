@@ -12,7 +12,12 @@ private:
 	cFont* Font;
 
 public:
+	DWORD dwEndScene, dwReset, dwDIP;
 	cDirectx(PBYTE pbEndscene, PBYTE pbReset, PBYTE pbDIP);
+
+	void HookEndscene(PBYTE es);
+	void HookDIP(PBYTE dip);
+	void HookReset(PBYTE rs);
 
 	void RenderString(int x, int y, DWORD color, char* text);
 

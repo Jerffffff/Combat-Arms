@@ -12,7 +12,6 @@ extern "C"
 
 		MODULEINFO mInfo;
 		DWORD dwD3D9 = NULL;
-		DWORD dwEndScene, dwReset, dwDIP;
 
 		OSVERSIONINFO WindowsVersion;
 		WindowsVersion.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
@@ -45,15 +44,21 @@ extern "C"
 			dwEndScene = (int)mInfo.EntryPoint + 0x7A2E;
 			dwReset = (int)mInfo.EntryPoint + 0xFFFFFFFFFFFC3F2E;
 		}
+	}
 
-		if (pbDIP)
-			pDIP = (tDIP)DetourFunction(PBYTE(dwDIP), pbDIP);
+	void cDirectx::HookEndscene(PBYTE es)
+	{
+		pEndscene = (tEndscene)DetourFunction(PBYTE(dwEndScene), es);
+	}
 
-		if (pbEndscene)
-			pEndscene = (tEndscene)DetourFunction(PBYTE(dwEndScene), pbEndscene);
+	void cDirectx::HookDIP(PBYTE dip)
+	{
+		pDIP = (tDIP)DetourFunction(PBYTE(dwDIP), dip);
+	}
 
-		//if (pbReset)
-			//pReset = (tReset)DetourFunction(PBYTE(dwReset), pbReset);
+	void cDirectx::HookReset(PBYTE rs)
+	{
+		//pReset = (tReset)DetourFunction(PBYTE(dwReset), pbReset);
 	}
 
 	void cDirectx::RenderString(int x, int y, DWORD color, char* text)
