@@ -1,4 +1,5 @@
 #include "Menu.h"
+#include "../Memory/Memory.h"
 
 const D3DCOLOR Red = D3DCOLOR_ARGB(255, 255, 0, 0);
 const D3DCOLOR Yellow = D3DCOLOR_ARGB(255, 255, 255, 0);
@@ -23,15 +24,26 @@ const D3DCOLOR Outline = D3DCOLOR_ARGB(255, 140, 140, 140);
 
 extern "C"
 {
-	cMenu* menu = NULL;
+	cMenu* Menu;
 	/************************************************************************/
 	/* INITIATE MENU (CREATE HACKS HERE)                                    */
 	/************************************************************************/
-	void cMenu::InitMenu()
+	cMenu::cMenu()
 	{
-		CreateTab(Strings->MENU_VISUAL);
-		CreateCheck(Strings->MENU_VISUAL, Strings->ITEM_CHAMS, &ITEM_CHAMS);
+		char* aNumbers[] = { /*1*/XorStr<0xF8, 2, 0x8FF35086>("\xC9" + 0x8FF35086).s, /*2*/XorStr<0x2C, 2, 0x38B7A6D3>("\x1E" + 0x38B7A6D3).s, /*3*/XorStr<0xCB, 2, 0x19E48046>("\xF8" + 0x19E48046).s, /*4*/XorStr<0xC1, 2, 0xD8524854>("\xF5" + 0xD8524854).s, /*5*/XorStr<0x93, 2, 0x8528736E>("\xA6" + 0x8528736E).s, /*6*/XorStr<0x08, 2, 0xE5970E16>("\x3E" + 0xE5970E16).s, /*7*/XorStr<0xEC, 2, 0xA3E63283>("\xDB" + 0xA3E63283).s, /*8*/XorStr<0x86, 2, 0x479A6389>("\xBE" + 0x479A6389).s, /*9*/XorStr<0xDF, 2, 0x30AA092F>("\xE6" + 0x30AA092F).s, /*10*/XorStr<0x29, 3, 0x589B0CAA>("\x18\x1A" + 0x589B0CAA).s, /*11*/XorStr<0x82, 3, 0x51C8AFEB>("\xB3\xB2" + 0x51C8AFEB).s, /*12*/XorStr<0xAA, 3, 0x7482A96F>("\x9B\x99" + 0x7482A96F).s };
 
+		ActiveName = NULL;
+
+		CreateTab(Strings->TAB_VISUAL);
+		CreateCheck(Strings->TAB_VISUAL, Strings->ITEM_CHAMS, &ITEM_CHAMS);
+		CreateCheck(Strings->TAB_VISUAL, Strings->ITEM_NOFOG, &ITEM_NOFOG);
+		CreateCheck(Strings->TAB_VISUAL, Strings->ITEM_CROSSHAIR, &ITEM_CROSSHAIR);
+
+		CreateTab(Strings->TAB_PLAYER);
+		CreateCheck(Strings->TAB_PLAYER, Strings->ITEM_FLY, &ITEM_FLY);
+		CreateCheck(Strings->TAB_PLAYER, Strings->ITEM_HOVER, &ITEM_HOVER);
+		CreateCheck(Strings->TAB_PLAYER, Strings->ITEM_INVISIBLE, &ITEM_INVISIBLE);
+		CreateSlider(Strings->TAB_PLAYER, Strings->ITEM_SUPERJUMP, 10, &ITEM_SUPERJUMP, aNumbers);
 
 		Tabs[0].Active = true;
 	}
@@ -41,30 +53,33 @@ extern "C"
 	/************************************************************************/
 	void cMenu::DrawMenu()
 	{
-		/*
-		#ifdef CA
-		cPlayerMgr*			pPlayerManager;
-		pPlayerManager      = *(cPlayerMgr**)ADDR_PLAYERMANAGER;
+		if (!MenuOpen || *(int*)Memory->ADDRESS_GAMESTATUS == 3)
+			return;
 
-		//Freeze mouse
-		if( !LockView )
+		Directx->g_pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, D3DZB_TRUE);
+		Directx->g_pDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
+		Directx->g_pDevice->SetFVF(D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1);
+
+		if (*(int*)Memory->ADDRESS_GAMESTATUS == 1)
 		{
-		Pitch =  pPlayerManager->Pitch;
-		Yaw = pPlayerManager->Yaw;
-
-		LockView = true;
+			if (!LockView)
+			{
+				Pitch = Memory->PlayerMgr->Pitch;
+				Yaw = Memory->PlayerMgr->Yaw;
+				LockView = true;
+			}
+			else
+			{
+				Memory->PlayerMgr->Pitch = Pitch;
+				Memory->PlayerMgr->Yaw = Yaw;
+			}
 		}
-
-		pPlayerManager->Pitch = Pitch;
-		pPlayerManager->Yaw = Yaw;
-		#endif
-		*/
-
+		
 		//Body Stuff.
 		Directx->GradientRect(10, 10, 300, 20, Grey, DGrey, gr_orientation::vertical);
 		Directx->DrawFilledRectangle(10, 30, 300, 280, DGrey);
 		Directx->DrawNonFilledRectangle(10, 10, 300, 300, Outline);
-		Directx->PrintText(100, 20, White, "amzer");
+		Directx->PrintText(100, 20, White, Strings->MENU_TITLE);
 
 		//Tabs.
 		sizeoftab = 291 / (TabCount);
@@ -95,6 +110,8 @@ extern "C"
 				d++;
 			}
 		}
+
+		Directx->g_pDevice->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
 	}
 
 	/************************************************************************/
@@ -103,7 +120,11 @@ extern "C"
 	void cMenu::MenuNavigation()
 	{
 		if (GetAsyncKeyState(VK_INSERT) & 1)
+		{
 			MenuOpen = !MenuOpen;
+			if (!MenuOpen)
+				LockView = false;
+		}
 
 		GetCursorPos(&Cur);
 

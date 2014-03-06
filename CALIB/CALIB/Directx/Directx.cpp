@@ -1,6 +1,7 @@
 #include "Directx.h"
 #include "../Strings/Strings.h"
 #include "../Detours/Detours.h"
+#include "../Log/Log.h"
 
 #define D3DFVF_TL (D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1)
 
@@ -11,6 +12,7 @@ extern "C"
 	cDirectx::cDirectx()
 	{
 		//Font = new cFont();
+		pFont = NULL;
 
 		MODULEINFO mInfo;
 		DWORD dwD3D9 = NULL;
@@ -29,11 +31,12 @@ extern "C"
 
 		GetModuleInformation(GetCurrentProcess(), (HMODULE)dwD3D9, &mInfo, sizeof(MODULEINFO));
 
+		Log->log("0x%X", (int)mInfo.EntryPoint);
 		if (WindowsVersion.dwMajorVersion == 6 && WindowsVersion.dwMinorVersion == 2)//Windows 8
 		{
-			dwDIP = (int)mInfo.EntryPoint + 0xFFFFFFFFFFFE95B7;
-			dwEndScene = (int)mInfo.EntryPoint + 0xFFFFFFFFFFFDF736;
-			dwReset = (int)mInfo.EntryPoint + 0xFFFFFFFFFFFF28E6;
+			dwDIP = (int)mInfo.EntryPoint + 0x245AA;
+			dwEndScene = (int)mInfo.EntryPoint + 0x1BCC7;
+			dwReset = (int)mInfo.EntryPoint + 0x437B7;
 		}
 		else if (WindowsVersion.dwMajorVersion == 6 && WindowsVersion.dwMinorVersion == 1)//Windows 7  
 		{
@@ -67,7 +70,7 @@ extern "C"
 
 	void cDirectx::HookReset(PBYTE rs)
 	{
-		//pReset = (tReset)DetourFunction(PBYTE(dwReset), pbReset);
+		pReset = (tReset)DetourFunction(PBYTE(dwReset), rs);
 	}
 
 	void cDirectx::RenderString(int x, int y, DWORD color, char* text)
@@ -249,6 +252,9 @@ extern "C"
 
 	void cDirectx::PrintText(long x, long y, D3DCOLOR fontColor, char *text, ...)
 	{
+		if (IsBadReadPtr(pFont, 4) || !pFont)
+			return;
+
 		RECT rct;
 		rct.left = x - 1;
 		rct.right = x + 1;

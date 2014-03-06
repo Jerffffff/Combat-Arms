@@ -54,7 +54,10 @@ public:
 	Slider Sliders[1000];
 
 	//Menu Variables.
-	int ITEM_CHAMS;
+	int ITEM_CHAMS, ITEM_NOFOG, ITEM_CROSSHAIR;
+	int ITEM_FLY, ITEM_HOVER, ITEM_INVISIBLE, ITEM_SUPERJUMP;
+
+	///
 	int TabCount, CheckCount, SliderCount;
 	int Aimkey, RapidKey, WeaponKey;
 	char* ActiveName;
@@ -70,7 +73,7 @@ public:
 	int waitforkey;
 
 	//Functions.
-	void InitMenu();
+	cMenu();
 	void DrawMenu();
 	void MenuNavigation();
 	void CreateTab(char* Text);

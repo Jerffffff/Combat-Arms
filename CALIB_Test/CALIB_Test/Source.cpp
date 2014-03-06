@@ -39,7 +39,6 @@ __declspec(naked) void __stdcall vESP()
 	__asm JMP dwESPJMP;
 }
 
-bool bChams = false;
 #define smPlayer (Directx->Stride == 44) 
 #define smHeads (Directx->Stride == 36) 
 #define smGuns (Directx->Stride == 32) 
@@ -57,20 +56,18 @@ HRESULT WINAPI myDIP(LPDIRECT3DDEVICE9 pDevice, D3DPRIMITIVETYPE Type, int BaseV
 	{
 		Directx->pStreamData->Release();
 
-		pDevice->SetRenderState(D3DRS_FOGENABLE, false);
+		if(Menu->ITEM_NOFOG)
+			pDevice->SetRenderState(D3DRS_FOGENABLE, false);
 
-		if (PlayerModel)
+		if (Menu->ITEM_CHAMS && PlayerModel)
 		{
-			if (bChams)
-			{
-				pDevice->SetRenderState(D3DRS_ZENABLE, false);
-				pDevice->SetTexture(0, texBack);
+			pDevice->SetRenderState(D3DRS_ZENABLE, false);
+			pDevice->SetTexture(0, texBack);
 
-				Directx->pDIP(pDevice, Type, BaseVertexIndex, MinIndex, NumVerts, StartIndex, PrimCount);
+			Directx->pDIP(pDevice, Type, BaseVertexIndex, MinIndex, NumVerts, StartIndex, PrimCount);
 
-				pDevice->SetTexture(0, texFront);
-				pDevice->SetRenderState(D3DRS_ZENABLE, true);
-			}
+			pDevice->SetTexture(0, texFront);
+			pDevice->SetRenderState(D3DRS_ZENABLE, true);
 		}
 	}
 
@@ -81,59 +78,54 @@ HRESULT WINAPI myEndscene(LPDIRECT3DDEVICE9 pDevice)
 {
 	if (!Directx->Checks(pDevice))
 	{
-		if (texFront)
-			texFront->Release();
-		if (texBack)
-			texBack->Release();
-
+		try
+		{
+			if (Directx->pFont)
+				Directx->pFont->Release();
+			if (texFront)
+				texFront->Release();
+			if (texBack)
+				texBack->Release();
+		}
+		catch (...) {}
+		Directx->pFont = NULL;
 		texFront = NULL;
 		texBack = NULL;
-
 		Directx->GenerateTexture(pDevice, &texFront, 0xFFFF0000);
 		Directx->GenerateTexture(pDevice, &texBack, 0xFF0000FF);
-		D3DXCreateFontA(pDevice, 12, 5, FW_THIN, 1, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, DEFAULT_PITCH | FF_DONTCARE, /*Tahoma*/XorStr<0x59, 7, 0x103882E4>("\x0D\x3B\x33\x33\x30\x3F" + 0x103882E4).s, &Directx->pFont);
+		D3DXCreateFontA(pDevice, 12, 5, FW_THIN, 1, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, DEFAULT_PITCH | FF_DONTCARE, Strings->FONT_NAME, &Directx->pFont);
 
 		Directx->g_pDevice = pDevice;
 	}
 	else
 	{
-		Directx->DrawCrosshair(25, 0xFFFF0000);
+		Menu->MenuNavigation();
+		Menu->DrawMenu();
+
+		if (Menu->ITEM_CROSSHAIR)
+			Directx->DrawCrosshair(25, 0xFFFF0000);
 	}
 
 	return Directx->pEndscene(pDevice);
 }
 
-typedef int(__cdecl *tEngineSprintf)(char* a1, const char *a2, ...);//37101150
-tEngineSprintf EngineSprintf;
-
-//37115C39    56              PUSH ESI
-DWORD dwTestJMP;
-__declspec(naked) void __stdcall vTest()
+HRESULT WINAPI myReset(LPDIRECT3DDEVICE9 pDevice, D3DPRESENT_PARAMETERS* pParam)
 {
-	static ILTMessage_Read* pMsg;
-	__asm
-	{
-		PUSHAD;
-		MOV pMsg, EAX;
-	}
+	Directx->pFont->OnLostDevice();
 
-	Memory->SendToServer(pMsg, 1);
+	HRESULT hr = Directx->pReset(pDevice, pParam);
 
-	__asm
-	{
-		POPAD;
+	if (hr == D3D_OK)
+		Directx->pFont->OnResetDevice();
 
-		PUSH 1;
-		PUSH EAX;
-		JMP dwTestJMP;
-	}
+	return hr;
 }
 
-bool bSuperJump = false;
 bool bHover = false;
-bool bFly = false, bbFly = false;
+bool bFly = false;
 bool bCorrection = false;
 bool bRapidFire = false;
+bool bInvisible = false;
 
 float fWeaponVars[999][32];
 DWORD _stdcall dwBreakpoint1Thread(LPVOID)
@@ -141,16 +133,18 @@ DWORD _stdcall dwBreakpoint1Thread(LPVOID)
 	HWID = new cHWID();
 	//Log->log("%s", HWID->Get().c_str());
 
-	if (strcmp(/*02-00-54-74-68-72*/XorStr<0x91, 18, 0x30305829>("\xA1\xA0\xBE\xA4\xA5\xBB\xA2\xAC\xB4\xAD\xAF\xB1\xAB\xA6\xB2\x97\x93" + 0x30305829).s, HWID->sHWID.c_str()) != 0)
-		TerminateProcess(GetCurrentProcess(), 0);
+	//if (strcmp(/*02-00-54-74-68-72*/XorStr<0x91, 18, 0x30305829>("\xA1\xA0\xBE\xA4\xA5\xBB\xA2\xAC\xB4\xAD\xAF\xB1\xAB\xA6\xB2\x97\x93" + 0x30305829).s, HWID->sHWID.c_str()) != 0)
+		//TerminateProcess(GetCurrentProcess(), 0);
+
+	Menu = new cMenu();
 
 	while (!GetModuleHandle(Strings->MODULE_CLIENTFX))
 		Sleep(250);
-	EngineSprintf = (tEngineSprintf)0x37101150;
 
 	Memory = new cMemory();
 
 	Directx = new cDirectx();
+	Directx->HookReset(PBYTE(&myReset));
 	Directx->HookEndscene(PBYTE(&myEndscene));
 	Directx->HookDIP(PBYTE(&myDIP));
 
@@ -216,7 +210,7 @@ DWORD _stdcall dwBreakpoint1Thread(LPVOID)
 		//if (GetAsyncKeyState(VK_INSERT) & 1)
 			//Memory->ChatMessage("penis", "licker");
 
-		if (GetAsyncKeyState(VK_INSERT) & 1)
+		if (GetAsyncKeyState(VK_DELETE) & 1)
 		{
 			bCorrection = !bCorrection;
 
@@ -256,12 +250,23 @@ DWORD _stdcall dwBreakpoint1Thread(LPVOID)
 				}
 			}
 		}
-
-		if (GetAsyncKeyState(VK_DELETE) & 1)
-			bChams = !bChams;
 			
-		if (GetAsyncKeyState(VK_NUMPAD9) & 1)
-			Memory->PlayerMgr->Status == 1 ? Memory->PlayerMgr->Status = 4 : Memory->PlayerMgr->Status == 4 ? Memory->PlayerMgr->Status = 1 : Memory->PlayerMgr->Status = Memory->PlayerMgr->Status;
+		if (Menu->ITEM_INVISIBLE)
+		{
+			if (!bInvisible)
+			{
+				Memory->PlayerMgr->Status == 1 ? Memory->PlayerMgr->Status = 4 : Memory->PlayerMgr->Status == 4 ? Memory->PlayerMgr->Status = 1 : Memory->PlayerMgr->Status = Memory->PlayerMgr->Status;
+				bInvisible = true;
+			}
+		}
+		else
+		{
+			if (bInvisible)
+			{
+				Memory->PlayerMgr->Status == 1 ? Memory->PlayerMgr->Status = 4 : Memory->PlayerMgr->Status == 4 ? Memory->PlayerMgr->Status = 1 : Memory->PlayerMgr->Status = Memory->PlayerMgr->Status;
+				bInvisible = false;
+			}
+		}
 
 		if (GetAsyncKeyState(VK_NUMPAD7) & 1)
 			bRapidFire = !bRapidFire;
@@ -272,24 +277,24 @@ DWORD _stdcall dwBreakpoint1Thread(LPVOID)
 		if (Memory->PlayerMgr->WeaponMgr && Memory->PlayerMgr->WeaponMgr->CurrentWeapon)
 			Memory->PlayerMgr->WeaponMgr->CurrentWeapon->iCurrentAmmoClip = 99;
 
-		if (GetAsyncKeyState(VK_SPACE) < 0 && bFly)
+		if (Menu->ITEM_FLY && GetAsyncKeyState(VK_SPACE) < 0)
 		{
-			if (!bbFly)
+			if (!bFly)
 			{
 				*(float*)Memory->ADDRESS_GRAVITY = 750.0f;
-				bbFly = true;
+				bFly = true;
 			}
 		}
 		else
 		{
-			if (bbFly)
+			if (bFly)
 			{
 				*(float*)Memory->ADDRESS_GRAVITY = -1099.0f;
-				bbFly = false;
+				bFly = false;
 			}
 		}
 
-		if (GetAsyncKeyState(VK_MENU))
+		if (Menu->ITEM_HOVER && GetAsyncKeyState(VK_MENU) < 0)
 		{
 			if (!bHover)
 			{
@@ -306,18 +311,7 @@ DWORD _stdcall dwBreakpoint1Thread(LPVOID)
 			}
 		}
 
-		if (GetAsyncKeyState(VK_NUMPAD2) & 1)
-			bFly = !bFly;
-
-		if (GetAsyncKeyState(VK_NUMPAD1) & 1)
-		{
-			bSuperJump = !bSuperJump;
-
-			if (bSuperJump)
-				*(float*)Memory->ADDRESS_JUMPVEL = *(float*)Memory->ADDRESS_JUMPVEL * 2.5f;
-			else
-				*(float*)Memory->ADDRESS_JUMPVEL = *(float*)Memory->ADDRESS_JUMPVEL / 2.5f;
-		}
+		*(float*)Memory->ADDRESS_JUMPVEL = 330.0f * (Menu->ITEM_SUPERJUMP + 1);
 
 		Sleep(50);
 	}

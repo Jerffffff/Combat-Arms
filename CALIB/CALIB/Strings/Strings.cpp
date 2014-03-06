@@ -42,9 +42,18 @@ extern "C"
 		Assign(&MASK_PICKUPDISTANCE, /*xx????xxxxxxxxxxxx*/XorStr<0x6E, 19, 0xF8DA0F59>("\x16\x17\x4F\x4E\x4D\x4C\x0C\x0D\x0E\x0F\x00\x01\x02\x03\x04\x05\x06\x07" + 0xF8DA0F59).s);
 		Assign(&MASK_ESP, /*xxx*/XorStr<0x8A, 4, 0xC1978229>("\xF2\xF3\xF4" + 0xC1978229).s);
 
-		Assign(&MENU_VISUAL, /*Visual*/XorStr<0x97, 7, 0x1F01DF8D>("\xC1\xF1\xEA\xEF\xFA\xF0" + 0x1F01DF8D).s);
+		Assign(&MENU_TITLE, /*The Zabas Hack*/XorStr<0x38, 15, 0xEDFF3E3A>("\x6C\x51\x5F\x1B\x66\x5C\x5C\x5E\x33\x61\x0A\x22\x27\x2E" + 0xEDFF3E3A).s);
 
-		Assign(&ITEM_CHAMS, /*Chams*/XorStr<0xFB, 6, 0xDB512619>("\xB8\x94\x9C\x93\x8C" + 0xDB512619).s);
+		Assign(&TAB_VISUAL, /*Visual*/XorStr<0x97, 7, 0x1F01DF8D>("\xC1\xF1\xEA\xEF\xFA\xF0" + 0x1F01DF8D).s);
+			Assign(&ITEM_CHAMS, /*Chams*/XorStr<0xFB, 6, 0xDB512619>("\xB8\x94\x9C\x93\x8C" + 0xDB512619).s);
+			Assign(&ITEM_NOFOG, /*No Fog*/XorStr<0xFB, 7, 0x185AE00E>("\xB5\x93\xDD\xB8\x90\x67" + 0x185AE00E).s);
+			Assign(&ITEM_CROSSHAIR, /*Crosshair*/XorStr<0x16, 10, 0xF6854636>("\x55\x65\x77\x6A\x69\x73\x7D\x74\x6C" + 0xF6854636).s);
+
+		Assign(&TAB_PLAYER, /*Player*/XorStr<0x18, 7, 0x77B0EDB8>("\x48\x75\x7B\x62\x79\x6F" + 0x77B0EDB8).s);
+			Assign(&ITEM_FLY, /*Fly*/XorStr<0x13, 4, 0xBD323403>("\x55\x78\x6C" + 0xBD323403).s);
+			Assign(&ITEM_HOVER, /*Hover*/XorStr<0xC4, 6, 0x9FF8FCDB>("\x8C\xAA\xB0\xA2\xBA" + 0x9FF8FCDB).s);
+			Assign(&ITEM_INVISIBLE, /*Invisible*/XorStr<0x8D, 10, 0xA2892B97>("\xC4\xE0\xF9\xF9\xE2\xFB\xF1\xF8\xF0" + 0xA2892B97).s);
+			Assign(&ITEM_SUPERJUMP, /*Super Jump*/XorStr<0x62, 11, 0xA7BA8FD3>("\x31\x16\x14\x00\x14\x47\x22\x1C\x07\x1B" + 0xA7BA8FD3).s);
 	}
 
 	/*

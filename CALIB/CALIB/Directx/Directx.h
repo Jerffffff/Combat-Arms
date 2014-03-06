@@ -67,6 +67,9 @@ public:
 	typedef HRESULT(WINAPI* tEndscene) (LPDIRECT3DDEVICE9);
 	tEndscene pEndscene;
 
+	typedef HRESULT(WINAPI* tReset) (LPDIRECT3DDEVICE9, D3DPRESENT_PARAMETERS*);
+	tReset pReset;
+
 	typedef HRESULT(WINAPI* tDIP) (LPDIRECT3DDEVICE9 pDevice, D3DPRIMITIVETYPE, int, UINT, UINT, UINT, UINT);
 	tDIP pDIP;
 	IDirect3DVertexBuffer9* pStreamData;
